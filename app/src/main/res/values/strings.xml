@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Kiss the Baker</string>
+    <string name="servings">Servings: %1$d</string>
+</resources>
