@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.swipeacademy.kissthebaker.MainActivity">
+    tools:context="com.swipeacademy.kissthebaker.Main.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -29,16 +29,14 @@
 
         </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
+    <fragment
+        android:id="@+id/fragment_recipe"
+        android:name="com.swipeacademy.kissthebaker.Main.RecipeFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:layout="@layout/fragment_recipe"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recipe_recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    </FrameLayout>
+    </fragment>
 
 </android.support.design.widget.CoordinatorLayout>
