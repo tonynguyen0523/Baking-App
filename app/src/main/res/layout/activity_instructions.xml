@@ -8,8 +8,10 @@
     tools:context="com.swipeacademy.kissthebaker.BakingInstructions.InstructionsActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/instructions_appBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/instructions_toolbar"
@@ -29,16 +31,36 @@
                 tools:text="Nutella Pie"/>
         </android.support.v7.widget.Toolbar>
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/instructions_tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+        <!--<android.support.design.widget.TabLayout-->
+            <!--android:id="@+id/instructions_tabs"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/instructions_viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    <!--<android.support.v4.view.ViewPager-->
+        <!--android:id="@+id/instructions_viewPager"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"/>-->
+
+
+
+    <!--<android.support.design.widget.BottomNavigationView-->
+        <!--android:id="@+id/bottom_navi"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:background="@color/colorAccent"-->
+        <!--android:elevation="4dp"-->
+        <!--app:itemIconTint="#000"-->
+        <!--app:itemTextColor="#000"-->
+        <!--app:menu="@menu/menu_navi"/>-->
+
+        <FrameLayout
+            android:id="@+id/instructions_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
 
 </android.support.design.widget.CoordinatorLayout>

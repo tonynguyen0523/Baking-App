@@ -87,6 +87,7 @@ public class RecipeFragment extends Fragment {
 
                         Intent intent = new Intent(getActivity(), InstructionsActivity.class);
                         Bundle bundle = new Bundle();
+                        bundle.putString("recipeName",recipeResponseList.get(position).getName());
                         bundle.putParcelableArrayList("ingredientsList",recipeResponseList.get(position).getIngredients());
                         bundle.putParcelableArrayList("stepsList", recipeResponseList.get(position).getSteps());
                         intent.putExtras(bundle);
@@ -111,8 +112,8 @@ public class RecipeFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         unbinder.unbind();
     }
 }

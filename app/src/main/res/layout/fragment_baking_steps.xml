@@ -1,12 +1,24 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.swipeacademy.kissthebaker.BakingInstructions.BakingStepsFragment">
+
+    <!--<android.support.design.widget.TabLayout-->
+        <!--android:id="@+id/steps_tabs"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true"/>-->
+
+    <!--<android.support.v4.view.ViewPager-->
+        <!--android:id="@+id/steps_viewPager"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_below="@id/steps_tabs"/>-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/baking_steps_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-</FrameLayout>
+</RelativeLayout>

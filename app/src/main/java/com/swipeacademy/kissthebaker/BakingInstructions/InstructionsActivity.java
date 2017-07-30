@@ -1,12 +1,18 @@
 package com.swipeacademy.kissthebaker.BakingInstructions;
 
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.swipeacademy.kissthebaker.Main.RecipeResponse;
 import com.swipeacademy.kissthebaker.R;
@@ -19,59 +25,39 @@ import butterknife.ButterKnife;
 
 public class InstructionsActivity extends AppCompatActivity {
 
-    @BindView(R.id.instructions_tabs)TabLayout tabs;
-    @BindView(R.id.instructions_viewPager)ViewPager viewPager;
+    @BindView(R.id.instructions_toolbar)Toolbar toolbar;
+    @BindView(R.id.instructions_recipe_name)TextView recipeName;
 
+    private static final String CURRENT_PAGE = "current_page";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instructions);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle bundle = this.getIntent().getExtras();
-        ArrayList<RecipeResponse.IngredientsBean> iList = bundle.getParcelableArrayList("ingredientsList");
-        ArrayList<RecipeResponse.StepsBean> sList = bundle.getParcelableArrayList("stepsList");
 
-        InstructionPagerAdapter instructionPagerAdapter = new InstructionPagerAdapter(getSupportFragmentManager(), iList, sList);
-        tabs.setupWithViewPager(viewPager);
-        viewPager.setAdapter(instructionPagerAdapter);
+        final ArrayList<RecipeResponse.IngredientsBean> iList = bundle
+                .getParcelableArrayList(getString(R.string.ingredientsList_key));
+
+        final ArrayList<RecipeResponse.StepsBean> sList = bundle.
+                getParcelableArrayList(getString(R.string.stepsList_Key));
+
+        String name = bundle.getString(getString(R.string.recipeName_key));
+        recipeName.setText(name);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.instructions_fragment_container, InstructionsFragment.newInstance(iList,sList))
+                .commit();
+
     }
 
-        private static class InstructionPagerAdapter extends FragmentPagerAdapter {
-
-        private static int NUM_ITEMS = 2;
-        private ArrayList<RecipeResponse.IngredientsBean> iList;
-        private ArrayList<RecipeResponse.StepsBean> sList;
-        private String[] tabs = {"Ingredients", "Steps"};
-
-        public InstructionPagerAdapter(FragmentManager fm, ArrayList<RecipeResponse.IngredientsBean> iList, ArrayList<RecipeResponse.StepsBean>sList) {
-            super(fm);
-            this.iList = iList;
-            this.sList = sList;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            IngredientsFragment ingredientsFragment = IngredientsFragment.newInstance(iList);
-            BakingStepsFragment bakingStepsFragment = BakingStepsFragment.newInstance(sList);
-            switch (position){
-                case 0:
-                    return ingredientsFragment;
-                case 1:
-                    return bakingStepsFragment;
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            return NUM_ITEMS;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return tabs[position];
-        }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }

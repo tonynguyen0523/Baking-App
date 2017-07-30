@@ -2,6 +2,13 @@
     <string name="app_name">Kiss the Baker</string>
     <string name="servings">Servings: %1$d</string>
     <string name="ingredient">Ingredient: %1$s</string>
+    <string name="step">%1$d. %2$s</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="instructions">Instructions</string>
+    <string name="ingredientsList_key">ingredientsList</string>
+    <string name="stepsList_Key">stepsList</string>
+    <string name="recipeName_key">recipeName</string>
+    <string name="stepPosition">stepPosition</string>
 </resources>

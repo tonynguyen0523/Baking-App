@@ -19,31 +19,30 @@ import butterknife.ButterKnife;
  * Created by tonyn on 7/26/2017.
  */
 
-public class BakingStepsRecyclerAdapter extends RecyclerView.Adapter<BakingStepsRecyclerAdapter.ViewHolder> {
+public class InstructionsRecyclerAdapter extends RecyclerView.Adapter<InstructionsRecyclerAdapter.ViewHolder> {
 
     private ArrayList<RecipeResponse.StepsBean> sList;
     private Context context;
+    private InstructionClickListener listener;
 
-    public BakingStepsRecyclerAdapter(Context context, ArrayList<RecipeResponse.StepsBean> sList){
+    public InstructionsRecyclerAdapter(Context context, ArrayList<RecipeResponse.StepsBean> sList){
         this.context = context;
         this.sList = sList;
     }
 
     @Override
-    public BakingStepsRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public InstructionsRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.baking_steps_recycler_item,parent,false);
-        return new BakingStepsRecyclerAdapter.ViewHolder(view);
+        return new InstructionsRecyclerAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(BakingStepsRecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(InstructionsRecyclerAdapter.ViewHolder holder, int position) {
 
         String shortDesc = sList.get(position).getShortDescription();
-        String desc = sList.get(position).getDescription();
 
-        holder.shortDesc.setText(shortDesc);
-        holder.desc.setText(desc);
+        holder.shortDesc.setText(context.getString(R.string.step,position + 1,shortDesc));
 }
 
     @Override
@@ -51,14 +50,27 @@ public class BakingStepsRecyclerAdapter extends RecyclerView.Adapter<BakingSteps
         return sList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.baking_steps_shortDes)TextView shortDesc;
-        @BindView(R.id.baking_steps_description)TextView desc;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             ButterKnife.bind(this,itemView);
         }
+
+        @Override
+        public void onClick(View view) {
+            listener.onInstructionClicked(view,getAdapterPosition());
+        }
+    }
+
+    public interface  InstructionClickListener{
+        void onInstructionClicked(View view, int position);
+    }
+
+    public void  setOnInstructionClickListener(InstructionClickListener listener){
+        this.listener = listener;
     }
 }

@@ -19,7 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BakingInstructions.InstructionsActivity"></activity>
+        <activity
+            android:name=".BakingInstructions.InstructionsActivity"
+            android:parentActivityName=".Main.MainActivity"></activity>
+        <activity android:name=".BakingInstructions.DirectionsActivity"
+            android:parentActivityName=".BakingInstructions.InstructionsActivity"></activity>
     </application>
 
 </manifest>
