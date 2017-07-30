@@ -1,9 +1,11 @@
 package com.swipeacademy.kissthebaker.BakingInstructions;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,7 +91,7 @@ public class DirectionsFragment extends Fragment {
                     Toast.makeText(getContext(),"Fullscreen on",Toast.LENGTH_SHORT).show();
                 } else {
                     isFullScreen = false;
-                    mSimpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    mSimpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(getContext(),250) ));
                     mDirections.setVisibility(View.VISIBLE);
                     Toast.makeText(getContext(),"Fullscreen off",Toast.LENGTH_SHORT).show();
                 }
@@ -132,5 +134,10 @@ public class DirectionsFragment extends Fragment {
         exoPlayer.stop();
         exoPlayer.release();
         exoPlayer = null;
+    }
+
+    public static int dpToPx(Context context, int dp) {
+        Resources r = context.getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 }
