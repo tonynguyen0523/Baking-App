@@ -11,6 +11,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,8 @@ import com.google.android.exoplayer2.util.Util;
 import com.swipeacademy.kissthebaker.Main.RecipeResponse;
 import com.swipeacademy.kissthebaker.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -40,14 +43,17 @@ public class DirectionsFragment extends Fragment {
 
     @BindView(R.id.simple_exo_play_view)SimpleExoPlayerView mSimpleExoPlayerView;
     @BindView(R.id.direction)TextView mDirections;
-
     @BindView(R.id.direction_appBar)AppBarLayout appBarLayout;
+    @BindView(R.id.directions_toolbar)Toolbar toolbar;
+    @BindView(R.id.directions_toolbarText)TextView toolbarText;
+    @BindView(R.id.directions_toolbar_back_button)ImageButton backButton;
 
     private static final String STEPS_LIST = "sList";
     private static final String POSITION = "position";
 
     private ArrayList<RecipeResponse.StepsBean> sList;
     private String videoUrl;
+    private String description;
     private String directionString;
     private int position;
     private SimpleExoPlayer exoPlayer;
@@ -84,29 +90,40 @@ public class DirectionsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_directions, container, false);
         unbinder = ButterKnife.bind(this,view);
 
+        videoUrl = sList.get(position).getVideoURL();
+        description = sList.get(position).getShortDescription();
+        directionString = sList.get(position).getDescription();
+
+        toolbarText.setText(description);
+        mDirections.setText(directionString);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().onBackPressed();
+            }
+        });
+
         view.findViewById(R.id.exo_full).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!isFullScreen){
                     isFullScreen = true;
-                    mSimpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                    mSimpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
                     mDirections.setVisibility(View.GONE);
                     appBarLayout.setVisibility(View.GONE);
                     Toast.makeText(getContext(),"Fullscreen on",Toast.LENGTH_SHORT).show();
                 } else {
                     isFullScreen = false;
-                    mSimpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(getContext(),250) ));
+                    mSimpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(getContext(),250) ));
                     mDirections.setVisibility(View.VISIBLE);
                     appBarLayout.setVisibility(View.VISIBLE);
                     Toast.makeText(getContext(),"Fullscreen off",Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        
-        videoUrl = sList.get(position).getVideoURL();
-        directionString = sList.get(position).getDescription();
-
-        mDirections.setText(directionString);
 
         initializePlayer(Uri.parse(videoUrl));
 
