@@ -19,26 +19,26 @@ import butterknife.ButterKnife;
  * Created by tonyn on 7/26/2017.
  */
 
-public class InstructionsRecyclerAdapter extends RecyclerView.Adapter<InstructionsRecyclerAdapter.ViewHolder> {
+public class DirectionsRecyclerAdapter extends RecyclerView.Adapter<DirectionsRecyclerAdapter.ViewHolder> {
 
     private ArrayList<RecipeResponse.StepsBean> sList;
     private Context context;
     private InstructionClickListener listener;
 
-    public InstructionsRecyclerAdapter(Context context, ArrayList<RecipeResponse.StepsBean> sList){
+    public DirectionsRecyclerAdapter(Context context, ArrayList<RecipeResponse.StepsBean> sList){
         this.context = context;
         this.sList = sList;
     }
 
     @Override
-    public InstructionsRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DirectionsRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.baking_steps_recycler_item,parent,false);
-        return new InstructionsRecyclerAdapter.ViewHolder(view);
+        return new DirectionsRecyclerAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(InstructionsRecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(DirectionsRecyclerAdapter.ViewHolder holder, int position) {
 
         String shortDesc = sList.get(position).getShortDescription();
 

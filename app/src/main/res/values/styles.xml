@@ -15,7 +15,6 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">30sp</item>
         <item name="android:textColor">@color/toolbarText</item>
-        <item name="android:fontFamily">cursive</item>
     </style>
 
 </resources>

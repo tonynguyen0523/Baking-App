@@ -26,12 +26,17 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:background="@android:color/transparent"
+                    android:paddingRight="20dp"
+                    android:paddingEnd="20dp"
                     android:src="@drawable/ic_arrow_back_white_24dp"/>
 
             <TextView
                 android:id="@+id/directions_toolbarText"
                 style="@style/ToolbarText"
                 android:gravity="center_vertical"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:fontFamily="cursive"
                 tools:text="Introduction"/>
 
             </LinearLayout>

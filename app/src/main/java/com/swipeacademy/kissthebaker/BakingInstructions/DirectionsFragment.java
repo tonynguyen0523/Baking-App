@@ -1,12 +1,14 @@
 package com.swipeacademy.kissthebaker.BakingInstructions;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +52,7 @@ public class DirectionsFragment extends Fragment {
 
     private static final String STEPS_LIST = "sList";
     private static final String POSITION = "position";
+    private static final String IS_FULLSCREEN = "is_fullscreen";
 
     private ArrayList<RecipeResponse.StepsBean> sList;
     private String videoUrl;
@@ -58,7 +61,7 @@ public class DirectionsFragment extends Fragment {
     private int position;
     private SimpleExoPlayer exoPlayer;
     private Unbinder unbinder;
-    private boolean isFullScreen = false;
+    private boolean isFullScreen;
 
     public DirectionsFragment() {
         // Required empty public constructor
@@ -90,6 +93,12 @@ public class DirectionsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_directions, container, false);
         unbinder = ButterKnife.bind(this,view);
 
+        if(savedInstanceState == null){
+            isFullScreen = false;
+        } else {
+            isFullScreen = savedInstanceState.getBoolean(IS_FULLSCREEN);
+        }
+
         videoUrl = sList.get(position).getVideoURL();
         description = sList.get(position).getShortDescription();
         directionString = sList.get(position).getDescription();
@@ -109,6 +118,7 @@ public class DirectionsFragment extends Fragment {
             public void onClick(View view) {
                 if(!isFullScreen){
                     isFullScreen = true;
+                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                     mSimpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
                     mDirections.setVisibility(View.GONE);
@@ -116,6 +126,7 @@ public class DirectionsFragment extends Fragment {
                     Toast.makeText(getContext(),"Fullscreen on",Toast.LENGTH_SHORT).show();
                 } else {
                     isFullScreen = false;
+                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
                     mSimpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(getContext(),250) ));
                     mDirections.setVisibility(View.VISIBLE);
@@ -125,11 +136,16 @@ public class DirectionsFragment extends Fragment {
             }
         });
 
+        checkFullScreen(isFullScreen);
         initializePlayer(Uri.parse(videoUrl));
-
         return view;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(IS_FULLSCREEN,isFullScreen);
+    }
 
     @Override
     public void onDestroyView() {
@@ -155,6 +171,25 @@ public class DirectionsFragment extends Fragment {
         exoPlayer.stop();
         exoPlayer.release();
         exoPlayer = null;
+    }
+
+    public void checkFullScreen(boolean isFullScreen){
+
+        if(!isFullScreen){
+            mSimpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(getContext(),250) ));
+            mDirections.setVisibility(View.VISIBLE);
+            appBarLayout.setVisibility(View.VISIBLE);
+            Log.d("FULLSCREEN","not full");
+        } else {
+            mSimpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+            mDirections.setVisibility(View.GONE);
+            appBarLayout.setVisibility(View.GONE);
+            Log.d("FULLSCREEN","is full");
+        }
+
+
     }
 
     public static int dpToPx(Context context, int dp) {

@@ -36,7 +36,7 @@ public class InstructionsFragment extends Fragment {
     private ArrayList<RecipeResponse.StepsBean> sList;
 
     private IngredientsRecyclerAdapter ingredientsRecyclerAdapter;
-    private InstructionsRecyclerAdapter instructionsRecyclerAdapter;
+    private DirectionsRecyclerAdapter directionsRecyclerAdapter;
     private Unbinder unbinder;
 
     public static InstructionsFragment newInstance(ArrayList<RecipeResponse.IngredientsBean> iList, ArrayList<RecipeResponse.StepsBean>sList) {
@@ -72,12 +72,12 @@ public class InstructionsFragment extends Fragment {
         mIRecyclerView.setAdapter(ingredientsRecyclerAdapter);
         mIRecyclerView.setNestedScrollingEnabled(false);
 
-        instructionsRecyclerAdapter = new InstructionsRecyclerAdapter(getContext(),sList);
+        directionsRecyclerAdapter = new DirectionsRecyclerAdapter(getContext(),sList);
         mSRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mSRecyclerView.setAdapter(instructionsRecyclerAdapter);
+        mSRecyclerView.setAdapter(directionsRecyclerAdapter);
         mSRecyclerView.setNestedScrollingEnabled(false);
 
-        instructionsRecyclerAdapter.setOnInstructionClickListener(new InstructionsRecyclerAdapter.InstructionClickListener() {
+        directionsRecyclerAdapter.setOnInstructionClickListener(new DirectionsRecyclerAdapter.InstructionClickListener() {
             @Override
             public void onInstructionClicked(View view, int position) {
                 Intent intent = new Intent(getActivity(),DirectionsActivity.class)

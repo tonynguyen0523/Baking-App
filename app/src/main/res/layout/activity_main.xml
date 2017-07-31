@@ -24,8 +24,9 @@
             android:textStyle="bold"
             android:textColor="#fff"
             android:text="@string/app_name"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"/>
+            android:gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"/>
 
         </android.support.design.widget.AppBarLayout>
 
