@@ -5,6 +5,15 @@
     android:orientation="vertical"
     tools:context="com.swipeacademy.kissthebaker.BakingInstructions.DirectionsFragment">
 
+    <android.support.design.widget.AppBarLayout
+    android:id="@+id/direction_appBar"
+    android:layout_width="match_parent"
+    android:layout_height="?actionBarSize">
+
+
+    </android.support.design.widget.AppBarLayout>
+
+
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/simple_exo_play_view"
         android:layout_width="match_parent"

@@ -6,16 +6,17 @@
     android:layout_height="match_parent"
     tools:context="com.swipeacademy.kissthebaker.BakingInstructions.DirectionsActivity">
     
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <!--<android.support.design.widget.AppBarLayout-->
+        <!--android:id="@+id/direction_appBar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+        <!---->
+        <!--<android.support.v7.widget.Toolbar-->
+            <!--android:id="@+id/directions_toolbar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="?actionBarSize"/>-->
         
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/directions_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"/>
-        
-    </android.support.design.widget.AppBarLayout>
+    <!--</android.support.design.widget.AppBarLayout>-->
     
     <FrameLayout
         android:id="@+id/direction_fragment_container"

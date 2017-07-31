@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -39,6 +40,8 @@ public class DirectionsFragment extends Fragment {
 
     @BindView(R.id.simple_exo_play_view)SimpleExoPlayerView mSimpleExoPlayerView;
     @BindView(R.id.direction)TextView mDirections;
+
+    @BindView(R.id.direction_appBar)AppBarLayout appBarLayout;
 
     private static final String STEPS_LIST = "sList";
     private static final String POSITION = "position";
@@ -86,19 +89,20 @@ public class DirectionsFragment extends Fragment {
             public void onClick(View view) {
                 if(!isFullScreen){
                     isFullScreen = true;
-                    mSimpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                    mSimpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
                     mDirections.setVisibility(View.GONE);
+                    appBarLayout.setVisibility(View.GONE);
                     Toast.makeText(getContext(),"Fullscreen on",Toast.LENGTH_SHORT).show();
                 } else {
                     isFullScreen = false;
                     mSimpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(getContext(),250) ));
                     mDirections.setVisibility(View.VISIBLE);
+                    appBarLayout.setVisibility(View.VISIBLE);
                     Toast.makeText(getContext(),"Fullscreen off",Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-
+        
         videoUrl = sList.get(position).getVideoURL();
         directionString = sList.get(position).getDescription();
 
