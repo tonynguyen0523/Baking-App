@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.swipeacademy.kissthebaker.Main.RecipeResponse;
@@ -26,8 +27,12 @@ import butterknife.Unbinder;
  */
 public class InstructionsFragment extends Fragment {
 
-    @BindView(R.id.ingredients_recyclerView)RecyclerView mIRecyclerView;
-    @BindView(R.id.directions_recyclerView)RecyclerView mSRecyclerView;
+    @BindView(R.id.ingredients_recyclerView)
+    RecyclerView mIRecyclerView;
+    @BindView(R.id.directions_recyclerView)
+    RecyclerView mSRecyclerView;
+    @BindView(R.id.instructions_fragment_layout)
+    LinearLayout mLinearLayout;
 
     private static final String INGREDIENTS_LIST = "iList";
     private static final String STEPS_LIST = "sList";
@@ -39,15 +44,20 @@ public class InstructionsFragment extends Fragment {
     private DirectionsRecyclerAdapter directionsRecyclerAdapter;
     private Unbinder unbinder;
 
-    public static InstructionsFragment newInstance(ArrayList<RecipeResponse.IngredientsBean> iList, ArrayList<RecipeResponse.StepsBean>sList) {
+    public static InstructionsFragment newInstance(
+            ArrayList<RecipeResponse.IngredientsBean> iList, ArrayList<RecipeResponse.StepsBean> sList) {
         InstructionsFragment fragment = new InstructionsFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(INGREDIENTS_LIST,iList);
-        args.putParcelableArrayList(STEPS_LIST,sList);
+        args.putParcelableArrayList(INGREDIENTS_LIST, iList);
+        args.putParcelableArrayList(STEPS_LIST, sList);
         fragment.setArguments(args);
         return fragment;
     }
 
+    public interface InstructionCallBack{
+        void onDirectionSelected(ArrayList<RecipeResponse.StepsBean> sList,
+                                 int position);
+    }
 
     public InstructionsFragment() {
         // Required empty public constructor
@@ -65,14 +75,14 @@ public class InstructionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_instructions, container, false);
-        unbinder = ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this, view);
 
-        ingredientsRecyclerAdapter = new IngredientsRecyclerAdapter(getContext(),iList);
+        ingredientsRecyclerAdapter = new IngredientsRecyclerAdapter(getContext(), iList);
         mIRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mIRecyclerView.setAdapter(ingredientsRecyclerAdapter);
         mIRecyclerView.setNestedScrollingEnabled(false);
 
-        directionsRecyclerAdapter = new DirectionsRecyclerAdapter(getContext(),sList);
+        directionsRecyclerAdapter = new DirectionsRecyclerAdapter(getContext(), sList);
         mSRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mSRecyclerView.setAdapter(directionsRecyclerAdapter);
         mSRecyclerView.setNestedScrollingEnabled(false);
@@ -80,11 +90,12 @@ public class InstructionsFragment extends Fragment {
         directionsRecyclerAdapter.setOnInstructionClickListener(new DirectionsRecyclerAdapter.InstructionClickListener() {
             @Override
             public void onInstructionClicked(View view, int position) {
-                Intent intent = new Intent(getActivity(),DirectionsActivity.class)
-                        .putParcelableArrayListExtra(getString(R.string.stepsList_Key),sList)
-                        .putExtra(getString(R.string.stepPosition),position);
-                startActivity(intent);
-                Toast.makeText(getContext(),Integer.toString(position),Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(getActivity(), DirectionsActivity.class)
+//                        .putParcelableArrayListExtra(getString(R.string.stepsList_Key), sList)
+//                        .putExtra(getString(R.string.stepPosition), position);
+//                startActivity(intent);
+//                Toast.makeText(getContext(), Integer.toString(position), Toast.LENGTH_SHORT).show();
+                ((InstructionCallBack)getActivity()).onDirectionSelected(sList,position);
             }
         });
 

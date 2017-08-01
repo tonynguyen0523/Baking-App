@@ -1,6 +1,7 @@
 package com.swipeacademy.kissthebaker.Main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.swipeacademy.kissthebaker.BakingInstructions.InstructionsActivity;
+import com.swipeacademy.kissthebaker.BakingInstructions.InstructionsFragment;
 import com.swipeacademy.kissthebaker.MySingleton;
 import com.swipeacademy.kissthebaker.R;
 
@@ -27,7 +30,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

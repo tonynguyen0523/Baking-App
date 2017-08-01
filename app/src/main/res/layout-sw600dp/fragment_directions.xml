@@ -7,9 +7,9 @@
     tools:context="com.swipeacademy.kissthebaker.BakingInstructions.DirectionsFragment">
 
     <android.support.design.widget.AppBarLayout
-    android:id="@+id/direction_appBar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+        android:id="@+id/direction_appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/directions_toolbar"
@@ -31,14 +31,14 @@
                     android:paddingEnd="20dp"
                     android:src="@drawable/ic_arrow_back_white_24dp"/>
 
-            <TextView
-                android:id="@+id/directions_toolbarText"
-                style="@style/ToolbarText"
-                android:gravity="center_vertical"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:fontFamily="cursive"
-                tools:text="Introduction"/>
+                <TextView
+                    android:id="@+id/directions_toolbarText"
+                    style="@style/ToolbarText"
+                    android:gravity="center_vertical"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:fontFamily="cursive"
+                    tools:text="Introduction"/>
 
             </LinearLayout>
 

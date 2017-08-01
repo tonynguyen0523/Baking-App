@@ -92,6 +92,7 @@ public class RecipeFragment extends Fragment {
                         bundle.putParcelableArrayList("stepsList", recipeResponseList.get(position).getSteps());
                         intent.putExtras(bundle);
                         startActivity(intent);
+
                     }
                 });
 
