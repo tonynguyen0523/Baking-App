@@ -2,9 +2,12 @@ package com.swipeacademy.kissthebaker.BakingInstructions;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +16,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -43,34 +47,35 @@ import butterknife.Unbinder;
 
 public class DirectionsFragment extends Fragment {
 
-    @BindView(R.id.simple_exo_play_view)SimpleExoPlayerView mSimpleExoPlayerView;
-    @BindView(R.id.direction)TextView mDirections;
-    @BindView(R.id.direction_appBar)AppBarLayout appBarLayout;
-    @BindView(R.id.directions_toolbar)Toolbar toolbar;
-    @BindView(R.id.directions_toolbarText)TextView toolbarText;
-    @BindView(R.id.directions_toolbar_back_button)ImageButton backButton;
-    @BindView(R.id.fragment_direction_layout)LinearLayout layout;
+    @Nullable @BindView(R.id.simple_exo_play_view)SimpleExoPlayerView mSimpleExoPlayerView;
+    @Nullable @BindView(R.id.direction)TextView mDirections;
+    @Nullable @BindView(R.id.direction_appBar)AppBarLayout appBarLayout;
+    @Nullable @BindView(R.id.directions_toolbar)Toolbar toolbar;
+    @Nullable @BindView(R.id.directions_toolbarText)TextView toolbarText;
+    @Nullable @BindView(R.id.directions_toolbar_back_button)ImageButton backButton;
+    @Nullable @BindView(R.id.fragment_direction_layout)LinearLayout layout;
 
     private static final String STEPS_LIST = "sList";
     private static final String POSITION = "position";
     private static final String IS_FULLSCREEN = "is_fullscreen";
     private static final String IS_NULL = "is_null";
+    private static final String EXO_CURRENT_POSITION = "current_position";
 
     private ArrayList<RecipeResponse.StepsBean> sList;
     private String videoUrl;
     private String description;
     private String directionString;
     private int position;
+    private long exo_current_position = 0;
     private SimpleExoPlayer exoPlayer;
     private Unbinder unbinder;
-    private boolean isFullScreen;
+    private boolean isFullScreen = false;
     private boolean isNull;
 
     public DirectionsFragment() {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
     public static DirectionsFragment newInstance(ArrayList<RecipeResponse.StepsBean> sList, int position) {
 
         DirectionsFragment fragment = new DirectionsFragment();
@@ -91,6 +96,7 @@ public class DirectionsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         isNull = getArguments().getBoolean(IS_NULL);
         if(!isNull) {
             sList = getArguments().getParcelableArrayList(STEPS_LIST);
@@ -105,10 +111,13 @@ public class DirectionsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_directions, container, false);
         unbinder = ButterKnife.bind(this,view);
 
+        checkFullScreen();
+
         if(savedInstanceState == null){
             isFullScreen = false;
         } else {
             isFullScreen = savedInstanceState.getBoolean(IS_FULLSCREEN);
+            exo_current_position = savedInstanceState.getLong(EXO_CURRENT_POSITION);
         }
 
         if(!isNull) {
@@ -117,41 +126,33 @@ public class DirectionsFragment extends Fragment {
             description = sList.get(position).getShortDescription();
             directionString = sList.get(position).getDescription();
 
-            toolbarText.setText(description);
-            mDirections.setText(directionString);
+            if(toolbarText != null) {
+                toolbarText.setText(description);
+                mDirections.setText(directionString);
 
-            backButton.setOnClickListener(new View.OnClickListener() {
+
+                backButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         getActivity().onBackPressed();
                     }
                 });
-
+            }
 
             view.findViewById(R.id.exo_full).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (!isFullScreen) {
                         isFullScreen = true;
-                        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                        mSimpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                        mDirections.setVisibility(View.GONE);
-                        appBarLayout.setVisibility(View.GONE);
+                        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                     } else {
                         isFullScreen = false;
-                        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-                        mSimpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(getContext(), 250)));
-                        mDirections.setVisibility(View.VISIBLE);
-                        appBarLayout.setVisibility(View.VISIBLE);
+                        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                     }
                 }
             });
 
-            checkFullScreen(isFullScreen);
             initializePlayer(Uri.parse(videoUrl));
-
         } else {
             layout.setVisibility(View.INVISIBLE);
         }
@@ -162,6 +163,7 @@ public class DirectionsFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(IS_FULLSCREEN,isFullScreen);
+        outState.putLong(EXO_CURRENT_POSITION,exoPlayer.getCurrentPosition());
     }
 
     @Override
@@ -181,6 +183,9 @@ public class DirectionsFragment extends Fragment {
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                     getContext(),userAgent), new DefaultExtractorsFactory(),null,null);
             exoPlayer.prepare(mediaSource);
+            if (exo_current_position != 0){
+                exoPlayer.seekTo(exo_current_position);
+            }
         }
     }
 
@@ -193,20 +198,16 @@ public class DirectionsFragment extends Fragment {
         }
     }
 
-    public void checkFullScreen(boolean isFullScreen){
+    public void checkFullScreen(){
 
-        if(!isFullScreen){
-            mSimpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(getContext(),250) ));
-            mDirections.setVisibility(View.VISIBLE);
-            appBarLayout.setVisibility(View.VISIBLE);
-            Log.d("FULLSCREEN","not full");
-        } else {
-            mSimpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-            mDirections.setVisibility(View.GONE);
-            appBarLayout.setVisibility(View.GONE);
-            Log.d("FULLSCREEN","is full");
+    Configuration newConfig = new Configuration();
+
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            isFullScreen = true;
+            Toast.makeText(getContext(), "landscape", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            isFullScreen = false;
+            Toast.makeText(getContext(), "portrait", Toast.LENGTH_SHORT).show();
         }
     }
 

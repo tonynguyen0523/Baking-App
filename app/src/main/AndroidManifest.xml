@@ -22,8 +22,11 @@
         <activity
             android:name=".BakingInstructions.InstructionsActivity"
             android:parentActivityName=".Main.MainActivity"></activity>
-        <activity android:name=".BakingInstructions.DirectionsActivity"
-            android:parentActivityName=".BakingInstructions.InstructionsActivity"></activity>
+        <activity
+            android:name=".BakingInstructions.DirectionsActivity"
+            android:parentActivityName=".BakingInstructions.InstructionsActivity"
+            android:configChanges="orientation">
+        </activity>
     </application>
 
 </manifest>
