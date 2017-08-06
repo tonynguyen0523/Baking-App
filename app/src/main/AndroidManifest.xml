@@ -27,6 +27,11 @@
             android:parentActivityName=".BakingInstructions.InstructionsActivity"
             android:configChanges="orientation">
         </activity>
+
+        <provider
+            android:authorities="com.swipeacademy.kissthebaker.RecipeProvider"
+            android:name="com.swipeacademy.kissthebaker.provider.RecipeProvider"
+            android:exported="false" />
     </application>
 
 </manifest>

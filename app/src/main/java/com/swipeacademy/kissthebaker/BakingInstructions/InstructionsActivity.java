@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.swipeacademy.kissthebaker.Main.RecipeResponse;
 import com.swipeacademy.kissthebaker.R;
@@ -30,9 +31,11 @@ public class InstructionsActivity extends AppCompatActivity implements Instructi
 
     @BindView(R.id.instructions_toolbar)Toolbar toolbar;
     @BindView(R.id.instructions_recipe_name)TextView recipeName;
+    @BindView(R.id.fav_toggle)ToggleButton toggleButton;
 
     private static final String DIRECTION_FRAGMENT_TAG = "DFT";
     private boolean mTwoPane;
+    private ArrayList<RecipeResponse.IngredientsBean> inList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

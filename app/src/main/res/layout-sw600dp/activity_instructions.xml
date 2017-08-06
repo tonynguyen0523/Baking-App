@@ -28,6 +28,19 @@
                 android:fontFamily="cursive"
                 android:gravity="center_vertical"
                 tools:text="Nutella Pie"/>
+
+            <ToggleButton
+                android:id="@+id/fav_toggle"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/fav_toggle_selector"
+                android:layout_gravity="end"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:textOn=""
+                android:textOff=""
+                android:focusable="false"
+                android:focusableInTouchMode="false" />
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>

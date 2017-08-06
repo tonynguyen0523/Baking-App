@@ -35,7 +35,9 @@ dependencies {
     compile 'net.simonvt.schematic:schematic:0.6.3'
     compile 'com.android.support:support-v4:26.+'
     compile 'com.google.android.exoplayer:exoplayer:r2.2.0'
-    testCompile 'junit:junit:4.12'
+    compile 'net.simonvt.schematic:schematic:{latest-version}'
+    annotationProcessor 'net.simonvt.schematic:schematic-compiler:{latest-version}'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     annotationProcessor 'net.simonvt.schematic:schematic-compiler:0.6.3'
+    testCompile 'junit:junit:4.12'
 }

@@ -57,6 +57,10 @@
         android:id="@+id/direction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:layout_margin="10dp"
         tools:text="directions"/>
 
 

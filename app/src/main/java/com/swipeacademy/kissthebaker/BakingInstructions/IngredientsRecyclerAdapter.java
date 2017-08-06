@@ -43,9 +43,10 @@ public class IngredientsRecyclerAdapter extends RecyclerView.Adapter<Ingredients
         String iName = iList.get(position).getIngredient();
         String iMeasure = iList.get(position).getMeasure();
         double iQuantity = iList.get(position).getQuantity();
-        String ingredient = context.getString(R.string.ingredient,Double.toString(iQuantity),iMeasure,iName);
+        String ingredientAmount = context.getString(R.string.ingredient_amount,Double.toString(iQuantity),iMeasure);
 
-        holder.name.setText(ingredient);
+        holder.name.setText(iName);
+        holder.amount.setText(ingredientAmount);
 //        holder.measure.setText(iMeasure);
 //        holder.quantity.setText(Double.toString(iQuantity));
     }
@@ -58,6 +59,7 @@ public class IngredientsRecyclerAdapter extends RecyclerView.Adapter<Ingredients
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.ingredient_name)TextView name;
+        @BindView(R.id.ingredient_amount)TextView amount;
 //        @BindView(R.id.ingredient_quantity)TextView quantity;
 //        @BindView(R.id.ingredient_measure)TextView measure;
 
