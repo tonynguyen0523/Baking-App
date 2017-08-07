@@ -3,6 +3,7 @@ package com.swipeacademy.kissthebaker;
 import static android.app.Instrumentation.ActivityResult;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -12,6 +13,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
@@ -29,6 +31,9 @@ import com.swipeacademy.kissthebaker.data.RecipeProvider;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+import static org.hamcrest.core.IsNot.not;
 
 
 import org.junit.Before;
@@ -97,20 +102,44 @@ public class DatabaseTest {
 
         String recipeName = rList.get(position).getName();
 
-        onView((withId(R.id.fav_toggle))).check(matches(isEnabled()));
+        onView((withId(R.id.fav_toggle))).check(matches(not(isChecked())));
         onView((withId(R.id.fav_toggle))).perform(click());
+
+        insertRecipe(recipeName);
+
+        onView((withId(R.id.fav_toggle))).check(matches(isChecked()));
+    }
+
+    public void insertRecipe(String recipeName){
 
         ContentValues cv = new ContentValues();
         cv.put(RecipeListColumns.RECIPE, recipeName);
         getTargetContext().getContentResolver().insert(RecipeProvider.Lists.CONTENT_URI, cv);
 
-        
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            Cursor cursor = getTargetContext().getContentResolver()
+                    .query(RecipeProvider.Lists.CONTENT_URI,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null);
+
+            assertTrue("Error: No records returned", cursor.moveToFirst());
+            assertFalse("Error: More than one inserted", cursor.moveToNext());
+
+            long rowId = cursor.getLong(cursor.getColumnIndex("_id"));
+            assertTrue("Error: No records", rowId != -1L);
+
+            cursor.close();
+        }
+    }
+
+    public void deleteRecipe(){
 
     }
 
     public void getData(Context context){
-
-
 
         Gson gson = new GsonBuilder().create();
         Type recipeListType = new TypeToken<ArrayList<RecipeResponse>>(){}.getType();

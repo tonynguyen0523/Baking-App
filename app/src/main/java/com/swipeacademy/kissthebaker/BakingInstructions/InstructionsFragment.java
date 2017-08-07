@@ -90,11 +90,7 @@ public class InstructionsFragment extends Fragment {
         directionsRecyclerAdapter.setOnInstructionClickListener(new DirectionsRecyclerAdapter.InstructionClickListener() {
             @Override
             public void onInstructionClicked(View view, int position) {
-//                Intent intent = new Intent(getActivity(), DirectionsActivity.class)
-//                        .putParcelableArrayListExtra(getString(R.string.stepsList_Key), sList)
-//                        .putExtra(getString(R.string.stepPosition), position);
-//                startActivity(intent);
-//                Toast.makeText(getContext(), Integer.toString(position), Toast.LENGTH_SHORT).show();
+
                 ((InstructionCallBack)getActivity()).onDirectionSelected(sList,position);
             }
         });

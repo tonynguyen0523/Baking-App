@@ -39,7 +39,7 @@ public final class RecipeProvider {
         @ContentUri(
                 path = Path.LISTS,
                 type = "vnd.android.cursor.dir/list",
-                defaultSort = RecipeListColumns.RECIPE + "ASC")
+                defaultSort = RecipeListColumns.RECIPE + " ASC")
         public static final Uri CONTENT_URI = buildUri(Path.LISTS);
 
         @InexactContentUri(
