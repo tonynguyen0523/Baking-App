@@ -1,5 +1,7 @@
 package com.swipeacademy.kissthebaker.BakingInstructions;
 
+import android.content.ContentProviderOperation;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -20,6 +22,9 @@ import android.widget.ToggleButton;
 
 import com.swipeacademy.kissthebaker.Main.RecipeResponse;
 import com.swipeacademy.kissthebaker.R;
+import com.swipeacademy.kissthebaker.Utility;
+import com.swipeacademy.kissthebaker.data.RecipeListColumns;
+import com.swipeacademy.kissthebaker.data.RecipeProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +58,42 @@ public class InstructionsActivity extends AppCompatActivity implements Instructi
         final ArrayList<RecipeResponse.StepsBean> sList = bundle.
                 getParcelableArrayList(getString(R.string.stepsList_Key));
 
-        String name = bundle.getString(getString(R.string.recipeName_key));
+        final String name = bundle.getString(getString(R.string.recipeName_key));
+        final int recipeId = bundle.getInt("recipeId");
+        final int servingSize = bundle.getInt("servingSize");
         recipeName.setText(name);
+
+        if(Utility.recipeExist(this,recipeId)){
+            toggleButton.setChecked(true);
+        } else {
+            toggleButton.setChecked(false);
+        }
+
+        toggleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (toggleButton.isChecked()) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put(RecipeListColumns.RECIPE_NAME, name);
+                            contentValues.put(RecipeListColumns.RECIPE_ID, recipeId);
+                            contentValues.put(RecipeListColumns.SERVING_SIZE, servingSize);
+                            getContentResolver().insert(RecipeProvider.RecipeList.CONTENT_URI, contentValues);
+                        }
+                    }).start();
+                } else {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            InstructionsActivity.this.getContentResolver().delete(RecipeProvider.RecipeList.withRecipeName(name),null,null);
+                        }
+                    }).start();
+                }
+            }
+        });
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.instructions_fragment_container, InstructionsFragment.newInstance(iList,sList))

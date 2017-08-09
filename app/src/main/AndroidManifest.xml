@@ -21,17 +21,28 @@
         </activity>
         <activity
             android:name=".BakingInstructions.InstructionsActivity"
-            android:parentActivityName=".Main.MainActivity"></activity>
+            android:parentActivityName=".Main.MainActivity" />
         <activity
             android:name=".BakingInstructions.DirectionsActivity"
-            android:parentActivityName=".BakingInstructions.InstructionsActivity"
-            android:configChanges="orientation">
-        </activity>
+            android:configChanges="orientation"
+            android:parentActivityName=".BakingInstructions.InstructionsActivity"/>
 
         <provider
-            android:authorities="com.swipeacademy.kissthebaker.RecipeProvider"
-            android:name="com.swipeacademy.kissthebaker.provider.RecipeProvider"
+            android:name=".data.generated.RecipeProvider"
+            android:authorities="com.swipeacademy.kissthebaker.data.RecipeProvider"
             android:exported="false" />
+
+        <receiver android:name=".Widget.FavoriteRecipeWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/favorite_recipe_widget_info" />
+        </receiver>
+        <service android:name=".Widget.WidgetRemoteViewsService"
+            android:enabled="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>

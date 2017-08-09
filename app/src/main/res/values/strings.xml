@@ -11,4 +11,6 @@
     <string name="stepsList_Key">stepsList</string>
     <string name="recipeName_key">recipeName</string>
     <string name="stepPosition">stepPosition</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

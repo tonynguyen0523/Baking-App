@@ -59,7 +59,6 @@ public class DatabaseTest {
     private ArrayList<RecipeResponse.StepsBean> sList;
     private ArrayList<RecipeResponse.IngredientsBean> iList;
     private List<RecipeResponse> rList;
-    private TestUtility testUtility;
     private int position = 1;
 
     @Before
@@ -101,19 +100,21 @@ public class DatabaseTest {
         iList = rList.get(position).getIngredients();
 
         String recipeName = rList.get(position).getName();
+        String recipeName2 = rList.get(3).getName();
 
         onView((withId(R.id.fav_toggle))).check(matches(not(isChecked())));
         onView((withId(R.id.fav_toggle))).perform(click());
 
-        insertRecipe(recipeName);
+        insertRecipe(recipeName, recipeName2);
 
         onView((withId(R.id.fav_toggle))).check(matches(isChecked()));
     }
 
-    public void insertRecipe(String recipeName){
+    public void insertRecipe(String recipeName, String recipe2){
 
         ContentValues cv = new ContentValues();
         cv.put(RecipeListColumns.RECIPE, recipeName);
+        cv.put(RecipeListColumns.RECIPE, recipe2);
         getTargetContext().getContentResolver().insert(RecipeProvider.Lists.CONTENT_URI, cv);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
@@ -128,8 +129,9 @@ public class DatabaseTest {
             assertTrue("Error: No records returned", cursor.moveToFirst());
             assertFalse("Error: More than one inserted", cursor.moveToNext());
 
-            long rowId = cursor.getLong(cursor.getColumnIndex("_id"));
-            assertTrue("Error: No records", rowId != -1L);
+            int count = cursor.getCount();
+
+            assertTrue("Error: wrong number of records.", count == 1);
 
             cursor.close();
         }
