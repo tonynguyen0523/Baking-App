@@ -77,16 +77,6 @@ public class FavoriteRecipeWidgetProvider extends AppWidgetProvider {
         super.onReceive(context, intent);
     }
 
-    @Override
-    public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
-    }
-
-    @Override
-    public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
-    }
-
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private static void setRemoteAdapter(Context context, @NonNull final RemoteViews views){
         views.setRemoteAdapter(R.id.widget_list,

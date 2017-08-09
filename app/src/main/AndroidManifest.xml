@@ -32,16 +32,19 @@
             android:authorities="com.swipeacademy.kissthebaker.data.RecipeProvider"
             android:exported="false" />
 
-        <receiver android:name=".Widget.FavoriteRecipeWidgetProvider">
+        <receiver android:name=".Widget.FavoriteRecipeWidgetProvider"
+            android:enabled="@bool/widget_detail_enabled">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.swipeacademy.kisshebaker.ACTION_DATA_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/favorite_recipe_widget_info" />
         </receiver>
         <service android:name=".Widget.WidgetRemoteViewsService"
-            android:enabled="false"
+            android:enabled="@bool/widget_detail_enabled"
+            android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
