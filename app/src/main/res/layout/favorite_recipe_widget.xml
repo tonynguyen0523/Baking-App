@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#09C"
+    android:background="#fff"
     android:padding="@dimen/widget_margin"
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools">
@@ -10,7 +10,7 @@
         android:id="@+id/widget_appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#09C">
+        android:background="@color/colorPrimary">
 
     <TextView
         android:id="@+id/appwidget_text"
@@ -21,14 +21,14 @@
         android:text="@string/appwidget_text"
         android:textColor="#ffffff"
         android:textSize="24sp"
+        android:fontFamily="cursive"
         android:textStyle="bold|italic" />
 </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_below="@id/widget_appBar">
+        android:layout_weight="1">
 
     <ListView
         android:id="@+id/widget_list"
@@ -36,12 +36,6 @@
         android:layout_height="match_parent"
         android:dividerHeight="0dp"
         tools:listitem=""/>
-
-        <!--<StackView-->
-            <!--android:id="@+id/widget_stack"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:loopViews="true"/>-->
 
         <TextView
             android:id="@+id/widget_emptyView"

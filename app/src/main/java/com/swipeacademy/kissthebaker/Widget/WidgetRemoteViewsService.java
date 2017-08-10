@@ -12,6 +12,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.swipeacademy.kissthebaker.R;
+import com.swipeacademy.kissthebaker.Utility;
 import com.swipeacademy.kissthebaker.data.RecipeDatabase;
 import com.swipeacademy.kissthebaker.data.RecipeIngredientsColumns;
 import com.swipeacademy.kissthebaker.data.RecipeListColumns;
@@ -46,6 +47,12 @@ public class WidgetRemoteViewsService extends RemoteViewsService{
     private static final int INDEX_INGREDIENT_MEASUREMENT = 2;
     private static final int INDEX_INGREDIENT_QUANTITY = 3;
     private static final int INDEX_INGREDIENT_RECIPE_ID = 4;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        FavoriteRecipeWidgetProvider.setWidgetText(this, Utility.getSavedIngredientName(this));
+    }
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
@@ -96,8 +103,12 @@ public class WidgetRemoteViewsService extends RemoteViewsService{
                         R.layout.favorite_recipe_widget_list_item);
 
                 String name = data.getString(INDEX_INGREDIENT_INGREDIENT);
+                String measurement = data.getString(INDEX_INGREDIENT_MEASUREMENT);
+                double quantity = data.getDouble(INDEX_INGREDIENT_QUANTITY);
 
-                views.setTextViewText(R.id.widget_recipe_name, name);
+                views.setTextViewText(R.id.widget_ingredient_name, name);
+                views.setTextViewText(R.id.widget_ingredient_amount, getString(R.string.ingredient_amount,
+                        Double.toString(quantity),measurement));
 
                 return views;
             }

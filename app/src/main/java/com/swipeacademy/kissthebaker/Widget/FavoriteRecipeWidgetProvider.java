@@ -81,12 +81,14 @@ public class FavoriteRecipeWidgetProvider extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
 
         super.onReceive(context, intent);
+
         if(InstructionsActivity.ACTION_DATA_UPDATED.equals(intent.getAction())) {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             int[] appwidgetIds = appWidgetManager.getAppWidgetIds(
                     new ComponentName(context, getClass())
             );
             appWidgetManager.notifyAppWidgetViewDataChanged(appwidgetIds, R.id.widget_list);
+            onUpdate(context,appWidgetManager,appwidgetIds);
         }
     }
 
@@ -102,6 +104,13 @@ public class FavoriteRecipeWidgetProvider extends AppWidgetProvider {
                 new Intent(context, WidgetRemoteViewsService.class));
     }
 
+    public static void setWidgetText(Context context, String name){
+
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.favorite_recipe_widget);
+
+        views.setTextViewText(R.id.appwidget_text,name);
+
+    }
 
 }
 

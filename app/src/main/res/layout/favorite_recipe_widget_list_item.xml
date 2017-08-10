@@ -6,15 +6,26 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/widget_recipe_name"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Brownies"/>
-    <!--<TextView-->
-        <!--android:id="@+id/widget_serving_size"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--tools:text="@string/servings"/>-->
+        android:layout_margin="6dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/widget_ingredient_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="Flour"/>
+
+        <TextView
+            android:id="@+id/widget_ingredient_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="@string/ingredient_amount"/>
+    </LinearLayout>
 
 </LinearLayout>
