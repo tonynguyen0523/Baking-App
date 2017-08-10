@@ -12,6 +12,8 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.swipeacademy.kissthebaker.R;
+import com.swipeacademy.kissthebaker.data.RecipeDatabase;
+import com.swipeacademy.kissthebaker.data.RecipeIngredientsColumns;
 import com.swipeacademy.kissthebaker.data.RecipeListColumns;
 import com.swipeacademy.kissthebaker.data.RecipeProvider;
 
@@ -31,6 +33,19 @@ public class WidgetRemoteViewsService extends RemoteViewsService{
     private static final int INDEX_RECIPE_NAME = 1;
     private static final int INDEX_RECIPE_SERVING_SIZE = 2;
 
+    private static final String[] INGREDIENTS_COLUMNS = {
+            RecipeIngredientsColumns.ID,
+            RecipeIngredientsColumns.INGREDIENT,
+            RecipeIngredientsColumns.MEASUREMENT,
+            RecipeIngredientsColumns.QUANTITY,
+            RecipeDatabase.RECIPE_INGREDIENTS + "." + RecipeIngredientsColumns.RECIPE_LIST_ID
+    };
+
+    private static final int INDEX_INGREDIENT_ID = 0;
+    private static final int INDEX_INGREDIENT_INGREDIENT = 1;
+    private static final int INDEX_INGREDIENT_MEASUREMENT = 2;
+    private static final int INDEX_INGREDIENT_QUANTITY = 3;
+    private static final int INDEX_INGREDIENT_RECIPE_ID = 4;
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
@@ -49,8 +64,8 @@ public class WidgetRemoteViewsService extends RemoteViewsService{
                 }
 
                 final long identityToken = Binder.clearCallingIdentity();
-                data = getContentResolver().query(RecipeProvider.RecipeList.CONTENT_URI,
-                        RECIPE_COLUMNS,
+                data = getContentResolver().query(RecipeProvider.RecipeIngredients.CONTENT_URI,
+                        INGREDIENTS_COLUMNS,
                         null,
                         null,
                         null);
@@ -80,11 +95,11 @@ public class WidgetRemoteViewsService extends RemoteViewsService{
                 RemoteViews views = new RemoteViews(getPackageName(),
                         R.layout.favorite_recipe_widget_list_item);
 
-                String name = data.getString(INDEX_RECIPE_NAME);
-                int servingSize = data.getInt(INDEX_RECIPE_SERVING_SIZE);
+                String name = data.getString(INDEX_INGREDIENT_INGREDIENT);
+//                int servingSize = data.getInt(INDEX_RECIPE_SERVING_SIZE);
 
                 views.setTextViewText(R.id.widget_recipe_name, name);
-                views.setTextViewText(R.id.widget_serving_size,getApplicationContext().getString(R.string.servings,servingSize));
+//                views.setTextViewText(R.id.widget_serving_size,getApplicationContext().getString(R.string.servings,servingSize));
 
                 return views;
             }
@@ -102,7 +117,7 @@ public class WidgetRemoteViewsService extends RemoteViewsService{
             @Override
             public long getItemId(int i) {
                 if (data.moveToPosition(i))
-                    return data.getLong(INDEX_ID);
+                    return data.getLong(INDEX_INGREDIENT_ID);
                 return i;
             }
 

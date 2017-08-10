@@ -11,10 +11,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Brownies"/>
-    <TextView
-        android:id="@+id/widget_serving_size"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="@string/servings"/>
+    <!--<TextView-->
+        <!--android:id="@+id/widget_serving_size"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--tools:text="@string/servings"/>-->
 
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -74,7 +75,15 @@ public class FavoriteRecipeWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
         super.onReceive(context, intent);
+        if(InstructionsActivity.ACTION_DATA_UPDATED.equals(intent.getAction())) {
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            int[] appwidgetIds = appWidgetManager.getAppWidgetIds(
+                    new ComponentName(context, getClass())
+            );
+            appWidgetManager.notifyAppWidgetViewDataChanged(appwidgetIds, R.id.widget_list);
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)

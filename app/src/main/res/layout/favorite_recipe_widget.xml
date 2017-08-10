@@ -6,23 +6,23 @@
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.design.widget.AppBarLayout
+    <FrameLayout
         android:id="@+id/widget_appBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#09C">
 
     <TextView
         android:id="@+id/appwidget_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:background="#09C"
         android:contentDescription="@string/appwidget_text"
         android:text="@string/appwidget_text"
         android:textColor="#ffffff"
         android:textSize="24sp"
         android:textStyle="bold|italic" />
-</android.support.design.widget.AppBarLayout>
+</FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -36,6 +36,12 @@
         android:layout_height="match_parent"
         android:dividerHeight="0dp"
         tools:listitem=""/>
+
+        <!--<StackView-->
+            <!--android:id="@+id/widget_stack"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:loopViews="true"/>-->
 
         <TextView
             android:id="@+id/widget_emptyView"

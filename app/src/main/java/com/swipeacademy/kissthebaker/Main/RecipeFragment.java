@@ -87,6 +87,7 @@ public class RecipeFragment extends Fragment {
 
                         Intent intent = new Intent(getActivity(), InstructionsActivity.class);
                         Bundle bundle = new Bundle();
+                        bundle.putInt("position", position);
                         bundle.putString("recipeName",recipeResponseList.get(position).getName());
                         bundle.putInt("recipeId", recipeResponseList.get(position).getId());
                         bundle.putInt("servingSize", recipeResponseList.get(position).getServings());
