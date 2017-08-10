@@ -96,10 +96,8 @@ public class WidgetRemoteViewsService extends RemoteViewsService{
                         R.layout.favorite_recipe_widget_list_item);
 
                 String name = data.getString(INDEX_INGREDIENT_INGREDIENT);
-//                int servingSize = data.getInt(INDEX_RECIPE_SERVING_SIZE);
 
                 views.setTextViewText(R.id.widget_recipe_name, name);
-//                views.setTextViewText(R.id.widget_serving_size,getApplicationContext().getString(R.string.servings,servingSize));
 
                 return views;
             }

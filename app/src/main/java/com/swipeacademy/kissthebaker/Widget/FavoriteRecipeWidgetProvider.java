@@ -16,6 +16,7 @@ import android.widget.RemoteViews;
 import com.swipeacademy.kissthebaker.BakingInstructions.InstructionsActivity;
 import com.swipeacademy.kissthebaker.Main.MainActivity;
 import com.swipeacademy.kissthebaker.R;
+import com.swipeacademy.kissthebaker.Utility;
 
 /**
  * Implementation of App Widget functionality.
@@ -26,20 +27,23 @@ public class FavoriteRecipeWidgetProvider extends AppWidgetProvider {
                                 int appWidgetId) {
 
         CharSequence widgetText = context.getString(R.string.app_name);
+        String recipeName = Utility.getSavedIngredientName(context);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.favorite_recipe_widget);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
+
+        if(recipeName.equals("")) {
+            views.setTextViewText(R.id.appwidget_text, widgetText);
+        } else {
+            views.setTextViewText(R.id.appwidget_text, recipeName);
+
+        }
 
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.widget_appBar, pendingIntent);
 
         // Set up the collection
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            setRemoteAdapter(context, views);
-        } else {
-            setRemoteAdapterV11(context, views);
-        }
+        setRemoteAdapter(context, views);
 
         boolean useDetailActivity = context.getResources()
                 .getBoolean(R.bool.use_detail_activity);

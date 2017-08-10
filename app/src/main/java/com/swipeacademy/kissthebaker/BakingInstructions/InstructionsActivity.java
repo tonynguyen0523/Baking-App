@@ -107,6 +107,7 @@ public class InstructionsActivity extends AppCompatActivity implements Instructi
                             }
 
                             try{
+                                Utility.setSavedIngredientName(InstructionsActivity.this,name);
                                 getContentResolver().insert(RecipeProvider.RecipeList.CONTENT_URI, recipeValues);
                                 InstructionsActivity.this.getContentResolver().applyBatch(RecipeProvider.AUTHORITY, batchOperations);
                                 InstructionsActivity.this.sendBroadcast(recipeDataUpdated);
@@ -122,7 +123,7 @@ public class InstructionsActivity extends AppCompatActivity implements Instructi
                         @Override
                         public void run() {
                             InstructionsActivity.this.getContentResolver().delete(RecipeProvider.RecipeIngredients.fromList(recipeId),null,null);
-                            InstructionsActivity.this.getContentResolver().delete(RecipeProvider.RecipeList.withRecipeName(name),null,null);
+                            InstructionsActivity.this.getContentResolver().delete(RecipeProvider.RecipeList.CONTENT_URI,null,null);
                             InstructionsActivity.this.sendBroadcast(recipeDataUpdated);
                         }
                     }).start();
