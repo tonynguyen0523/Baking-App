@@ -108,7 +108,7 @@ public class RecipeFragment extends Fragment {
                         bundle.putParcelableArrayList("ingredientsList",recipeResponseList.get(position).getIngredients());
                         bundle.putParcelableArrayList("stepsList", recipeResponseList.get(position).getSteps());
                         intent.putExtras(bundle);
-                        startActivity(intent);
+                        startActivityForResult(intent,1);
 
                     }
                 });
@@ -129,8 +129,6 @@ public class RecipeFragment extends Fragment {
         // Add String request to queue
         MySingleton.getInstance(getContext().getApplicationContext()).addToRequestQueue(recipeRequest);
 
-
-
         return view;
     }
 
@@ -138,5 +136,9 @@ public class RecipeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    public void refreshList(){
+        adapter.notifyDataSetChanged();
     }
 }

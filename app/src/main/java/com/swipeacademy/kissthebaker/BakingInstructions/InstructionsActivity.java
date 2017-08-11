@@ -157,6 +157,19 @@ public class InstructionsActivity extends AppCompatActivity implements Instructi
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finish();
+    }
+
+    @Override
+    public void finish() {
+        setResult(10001);
+        super.finish();
+
+    }
+
+    @Override
     public void onDirectionSelected(ArrayList<RecipeResponse.StepsBean> sList, int position) {
          if(mTwoPane){
              getSupportFragmentManager().beginTransaction()

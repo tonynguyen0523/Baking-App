@@ -105,4 +105,6 @@ public class InstructionsFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+
 }

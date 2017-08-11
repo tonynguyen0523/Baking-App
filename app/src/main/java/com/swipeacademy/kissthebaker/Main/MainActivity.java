@@ -40,4 +40,24 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if((requestCode == 10001) && (resultCode == 10001)){
+            RecipeFragment fragment = (RecipeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_recipe);
+
+            fragment.refreshList();
+            Log.d("REFRESH", "refresh");
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        RecipeFragment fragment = (RecipeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_recipe);
+
+        fragment.refreshList();
+    }
 }
