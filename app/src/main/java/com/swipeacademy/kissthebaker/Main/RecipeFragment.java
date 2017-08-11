@@ -99,12 +99,12 @@ public class RecipeFragment extends Fragment {
 
                         Intent intent = new Intent(getActivity(), InstructionsActivity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putInt("position", position);
-                        bundle.putString("recipeName",recipeResponseList.get(position).getName());
-                        bundle.putInt("recipeId", recipeResponseList.get(position).getId());
-                        bundle.putInt("servingSize", recipeResponseList.get(position).getServings());
-                        bundle.putParcelableArrayList("ingredientsList",recipeResponseList.get(position).getIngredients());
-                        bundle.putParcelableArrayList("stepsList", recipeResponseList.get(position).getSteps());
+                        bundle.putInt(getString(R.string.position), position);
+                        bundle.putString(getString(R.string.recipeName),recipeResponseList.get(position).getName());
+                        bundle.putInt(getString(R.string.recipeId), recipeResponseList.get(position).getId());
+                        bundle.putInt(getString(R.string.servingSize), recipeResponseList.get(position).getServings());
+                        bundle.putParcelableArrayList(getString(R.string.iList),recipeResponseList.get(position).getIngredients());
+                        bundle.putParcelableArrayList(getString(R.string.sList), recipeResponseList.get(position).getSteps());
                         intent.putExtras(bundle);
                         startActivityForResult(intent,1);
 

@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#883997</color>
     <color name="colorAccent">#ee98fb</color>
     <color name="toolbarText">#fff</color>
+    <color name="mainTextColor">#000</color>
+    <color name="naviArrowBackground">#fff</color>
+    <color name="toolbarTextColor">#fff</color>
 </resources>

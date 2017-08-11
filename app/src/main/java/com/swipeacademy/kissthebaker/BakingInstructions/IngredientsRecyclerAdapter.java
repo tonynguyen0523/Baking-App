@@ -47,8 +47,6 @@ public class IngredientsRecyclerAdapter extends RecyclerView.Adapter<Ingredients
 
         holder.name.setText(iName);
         holder.amount.setText(ingredientAmount);
-//        holder.measure.setText(iMeasure);
-//        holder.quantity.setText(Double.toString(iQuantity));
     }
 
     @Override
@@ -60,8 +58,6 @@ public class IngredientsRecyclerAdapter extends RecyclerView.Adapter<Ingredients
 
         @BindView(R.id.ingredient_name)TextView name;
         @BindView(R.id.ingredient_amount)TextView amount;
-//        @BindView(R.id.ingredient_quantity)TextView quantity;
-//        @BindView(R.id.ingredient_measure)TextView measure;
 
         public ViewHolder(View itemView) {
             super(itemView);

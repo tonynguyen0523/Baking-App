@@ -83,6 +83,8 @@ public class DirectionsFragment extends Fragment {
         args.putParcelableArrayList(STEPS_LIST,sList);
         args.putInt(POSITION, position);
 
+        // Set true if nothing was selected,
+        // needed in case in tablet mode
         if(position == -1){
             args.putBoolean(IS_NULL,true);
         } else {
@@ -120,16 +122,17 @@ public class DirectionsFragment extends Fragment {
             exo_current_position = savedInstanceState.getLong(EXO_CURRENT_POSITION);
         }
 
+
         if(!isNull) {
 
             videoUrl = sList.get(position).getVideoURL();
             description = sList.get(position).getShortDescription();
             directionString = sList.get(position).getDescription();
 
+            // Toolbar null when in tablet mode
             if(toolbarText != null) {
                 toolbarText.setText(description);
                 mDirections.setText(directionString);
-
 
                 backButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -139,6 +142,7 @@ public class DirectionsFragment extends Fragment {
                 });
             }
 
+            // Add function to custom exoplayer fullscreen button
             view.findViewById(R.id.exo_full).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -152,6 +156,8 @@ public class DirectionsFragment extends Fragment {
                 }
             });
 
+            // Check to see if video url is not empty,
+            // hide player if empty
             if (!videoUrl.equals("")) {
                 initializePlayer(Uri.parse(videoUrl));
             } else {
@@ -159,6 +165,7 @@ public class DirectionsFragment extends Fragment {
                 mSimpleExoPlayerView.setVisibility(View.GONE);
             }
         } else {
+            // For tablet mode, if no direction selected hide layout
             assert layout != null;
             layout.setVisibility(View.INVISIBLE);
         }
@@ -196,7 +203,6 @@ public class DirectionsFragment extends Fragment {
     }
 
     private void releasePlayer(){
-
         if(exoPlayer != null) {
             exoPlayer.stop();
             exoPlayer.release();
@@ -205,9 +211,7 @@ public class DirectionsFragment extends Fragment {
     }
 
     public void checkFullScreen(){
-
-    Configuration newConfig = new Configuration();
-
+        Configuration newConfig = new Configuration();
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             isFullScreen = true;
             Toast.makeText(getContext(), "landscape", Toast.LENGTH_SHORT).show();
@@ -215,10 +219,5 @@ public class DirectionsFragment extends Fragment {
             isFullScreen = false;
             Toast.makeText(getContext(), "portrait", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public static int dpToPx(Context context, int dp) {
-        Resources r = context.getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 }

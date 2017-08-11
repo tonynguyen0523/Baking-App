@@ -13,4 +13,11 @@
     <string name="stepPosition">stepPosition</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="position">position</string>
+    <string name="recipeName">recipeName</string>
+    <string name="recipeId">recipeId</string>
+    <string name="servingSize">servingSize</string>
+    <string name="iList">ingredientsList</string>
+    <string name="sList">stepsList</string>
+    <string name="no_recipe_favorites">No recipe favorites!</string>
 </resources>

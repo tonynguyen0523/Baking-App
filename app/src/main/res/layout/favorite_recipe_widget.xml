@@ -19,7 +19,7 @@
         android:layout_margin="8dp"
         android:contentDescription="@string/appwidget_text"
         android:text="@string/appwidget_text"
-        android:textColor="#ffffff"
+        android:textColor="@color/toolbarTextColor"
         android:textSize="24sp"
         android:fontFamily="cursive"
         android:textStyle="bold|italic" />
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="No Recipe Favorites!"/>
+            android:text="@string/no_recipe_favorites"/>
 
 
 </FrameLayout>

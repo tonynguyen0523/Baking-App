@@ -23,17 +23,17 @@
                 android:id="@+id/instructions_recipe_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30sp"
+                android:textSize="@dimen/toolbarTextSize"
                 android:textStyle="bold"
-                android:textColor="#fff"
+                android:textColor="@color/toolbarTextColor"
                 android:fontFamily="cursive"
                 android:gravity="center_vertical"
                 tools:text="Nutella Pie"/>
 
             <ToggleButton
                 android:id="@+id/fav_toggle"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="@dimen/toggle_button"
+                android:layout_height="@dimen/toggle_button"
                 android:background="@drawable/fav_toggle_selector"
                 android:layout_gravity="end"
                 android:layout_marginRight="10dp"

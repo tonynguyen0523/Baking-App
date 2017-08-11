@@ -5,23 +5,13 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.content.pm.ActivityInfo;
-import android.os.RemoteException;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.RemoteException;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.swipeacademy.kissthebaker.Main.RecipeResponse;
@@ -32,12 +22,11 @@ import com.swipeacademy.kissthebaker.data.RecipeListColumns;
 import com.swipeacademy.kissthebaker.data.RecipeProvider;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.swipeacademy.kissthebaker.Main.RecipeResponse.*;
+import static com.swipeacademy.kissthebaker.Main.RecipeResponse.IngredientsBean;
 
 public class InstructionsActivity extends AppCompatActivity implements InstructionsFragment.InstructionCallBack {
 
@@ -50,8 +39,7 @@ public class InstructionsActivity extends AppCompatActivity implements Instructi
     private static final String DIRECTION_FRAGMENT_TAG = "DFT";
     public static final String ACTION_DATA_UPDATED = "com.swipeacademy.kisshebaker.ACTION_DATA_UPDATE";
     private boolean mTwoPane;
-    private int listId;
-    private ArrayList<RecipeResponse.IngredientsBean> inList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +58,9 @@ public class InstructionsActivity extends AppCompatActivity implements Instructi
                 getParcelableArrayList(getString(R.string.stepsList_Key));
 
         final String name = bundle.getString(getString(R.string.recipeName_key));
-        final int recipeId = bundle.getInt("recipeId");
-        final int servingSize = bundle.getInt("servingSize");
-        final int position = bundle.getInt("position");
+        final int recipeId = bundle.getInt(getString(R.string.recipeId));
+        final int servingSize = bundle.getInt(getString(R.string.servingSize));
+        final int position = bundle.getInt(getString(R.string.position));
         recipeName.setText(name);
 
         if(Utility.recipeExist(this,recipeId)){
@@ -91,6 +79,8 @@ public class InstructionsActivity extends AppCompatActivity implements Instructi
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
+
+                            // Save recipe and ingredients to database.
                             ContentValues recipeValues = new ContentValues();
                             recipeValues.put(RecipeListColumns.RECIPE_NAME, name);
                             recipeValues.put(RecipeListColumns.RECIPE_ID, recipeId);
@@ -125,14 +115,14 @@ public class InstructionsActivity extends AppCompatActivity implements Instructi
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
+
+                            // Delete recipe and ingredient in database
                             Utility.setSavedIngredientName(InstructionsActivity.this,"");
                             InstructionsActivity.this.getContentResolver().delete(RecipeProvider.RecipeIngredients.CONTENT_URI,null,null);
                             InstructionsActivity.this.getContentResolver().delete(RecipeProvider.RecipeList.CONTENT_URI,null,null);
                             InstructionsActivity.this.sendBroadcast(recipeDataUpdated);
                         }
                     }).start();
-
-
                 }
             }
         });
@@ -144,6 +134,7 @@ public class InstructionsActivity extends AppCompatActivity implements Instructi
         if(findViewById(R.id.instruction_direction_fragment_container) != null){
             mTwoPane = true;
 
+            // In tablet mode set orientation to landscape
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
 
             getSupportFragmentManager().beginTransaction()
@@ -162,12 +153,6 @@ public class InstructionsActivity extends AppCompatActivity implements Instructi
         finish();
     }
 
-    @Override
-    public void finish() {
-        setResult(10001);
-        super.finish();
-
-    }
 
     @Override
     public void onDirectionSelected(ArrayList<RecipeResponse.StepsBean> sList, int position) {

@@ -59,6 +59,7 @@ public class DirectionsActivity extends AppCompatActivity {
             stepPosition = savedInstanceState.getInt(STEP_NUMBER);
         }
 
+        // Set correct position on navi
         updateStepNumberText(stepPosition);
 
         if (mPrevButton != null) {
@@ -102,7 +103,8 @@ public class DirectionsActivity extends AppCompatActivity {
         if(mStepNum != null) {
             mStepNum.setText(Integer.toString(stepPosition));
 
-
+            // Check position and hide arrow if at 0 or last position,
+            // preventing going negative and higher than list size
             if (stepPosition == 0) {
                 mPrevButton.setVisibility(View.GONE);
             } else if (stepPosition == sList.size() - 1) {

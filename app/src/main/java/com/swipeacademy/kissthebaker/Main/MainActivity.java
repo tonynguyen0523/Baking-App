@@ -33,7 +33,6 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity{
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,20 +41,10 @@ public class MainActivity extends AppCompatActivity{
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if((requestCode == 10001) && (resultCode == 10001)){
-            RecipeFragment fragment = (RecipeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_recipe);
-
-            fragment.refreshList();
-            Log.d("REFRESH", "refresh");
-        }
-    }
-
-    @Override
     protected void onRestart() {
         super.onRestart();
+
+        // Refresh recipe list in case database was updated
         RecipeFragment fragment = (RecipeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_recipe);
         fragment.refreshList();
         Log.d("ONRESTART", "restart called");

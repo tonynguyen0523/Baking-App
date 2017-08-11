@@ -100,26 +100,24 @@ public class DatabaseTest {
         iList = rList.get(position).getIngredients();
 
         String recipeName = rList.get(position).getName();
-        String recipeName2 = rList.get(3).getName();
 
         onView((withId(R.id.fav_toggle))).check(matches(not(isChecked())));
         onView((withId(R.id.fav_toggle))).perform(click());
 
-        insertRecipe(recipeName, recipeName2);
+        insertRecipe(recipeName);
 
         onView((withId(R.id.fav_toggle))).check(matches(isChecked()));
     }
 
-    public void insertRecipe(String recipeName, String recipe2){
+    public void insertRecipe(String recipeName){
 
         ContentValues cv = new ContentValues();
-        cv.put(RecipeListColumns.RECIPE, recipeName);
-        cv.put(RecipeListColumns.RECIPE, recipe2);
-        getTargetContext().getContentResolver().insert(RecipeProvider.Lists.CONTENT_URI, cv);
+        cv.put(RecipeListColumns.RECIPE_NAME, recipeName);
+        getTargetContext().getContentResolver().insert(RecipeProvider.RecipeList.CONTENT_URI, cv);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
             Cursor cursor = getTargetContext().getContentResolver()
-                    .query(RecipeProvider.Lists.CONTENT_URI,
+                    .query(RecipeProvider.RecipeList.CONTENT_URI,
                             null,
                             null,
                             null,

@@ -26,14 +26,12 @@ public class DirectionsRecyclerAdapter extends RecyclerView.Adapter<DirectionsRe
     private ArrayList<RecipeResponse.StepsBean> sList;
     private Context context;
     private InstructionClickListener listener;
-    private SparseBooleanArray selectedItems;
     private int lastSelected = -1;
 
 
     public DirectionsRecyclerAdapter(Context context, ArrayList<RecipeResponse.StepsBean> sList){
         this.context = context;
         this.sList = sList;
-        selectedItems = new SparseBooleanArray();
     }
 
     @Override
@@ -51,6 +49,7 @@ public class DirectionsRecyclerAdapter extends RecyclerView.Adapter<DirectionsRe
 
         holder.shortDesc.setText(context.getString(R.string.step,position,shortDesc));
 
+        // Highlight selected item
         if(position == lastSelected) {
             holder.mRelativeLayout.setSelected(true);
         } else {
@@ -81,6 +80,7 @@ public class DirectionsRecyclerAdapter extends RecyclerView.Adapter<DirectionsRe
             listener.onInstructionClicked(view,getAdapterPosition());
             lastSelected = getAdapterPosition();
 
+            // Refresh list to set correct highlighted item
             notifyDataSetChanged();
         }
     }
