@@ -49,7 +49,7 @@ public class DirectionsRecyclerAdapter extends RecyclerView.Adapter<DirectionsRe
 
         String shortDesc = sList.get(position).getShortDescription();
 
-        holder.shortDesc.setText(context.getString(R.string.step,position + 1,shortDesc));
+        holder.shortDesc.setText(context.getString(R.string.step,position,shortDesc));
 
         if(position == lastSelected) {
             holder.mRelativeLayout.setSelected(true);

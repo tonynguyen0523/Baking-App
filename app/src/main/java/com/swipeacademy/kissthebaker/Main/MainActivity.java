@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity{
     protected void onRestart() {
         super.onRestart();
         RecipeFragment fragment = (RecipeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_recipe);
-
         fragment.refreshList();
+        Log.d("ONRESTART", "restart called");
     }
 }

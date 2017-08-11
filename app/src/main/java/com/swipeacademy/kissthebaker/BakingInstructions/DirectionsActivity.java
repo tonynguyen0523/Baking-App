@@ -51,6 +51,7 @@ public class DirectionsActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         sList = bundle.getParcelableArrayList(getString(R.string.stepsList_Key));
+        stepPosition = bundle.getInt(getString(R.string.stepPosition));
 
         if(savedInstanceState == null) {
             stepPosition = bundle.getInt(getString(R.string.stepPosition));
@@ -94,22 +95,6 @@ public class DirectionsActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(STEP_NUMBER,stepPosition);
-    }
-
-    public void prevStep(){
-        stepPosition--;
-        mFragment = DirectionsFragment.newInstance(sList,stepPosition);
-        updateStepNumberText(stepPosition);
-        FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.direction_fragment_container,mFragment,TAG_RETAINED_FRAGMENT).commit();
-    }
-
-    public void nextStep(){
-        stepPosition++;
-        mFragment = DirectionsFragment.newInstance(sList,stepPosition);
-        updateStepNumberText(stepPosition);
-        FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.direction_fragment_container,mFragment,TAG_RETAINED_FRAGMENT).commit();
     }
 
     private void updateStepNumberText(int stepPosition){

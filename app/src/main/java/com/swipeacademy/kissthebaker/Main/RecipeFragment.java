@@ -64,7 +64,6 @@ public class RecipeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_recipe, container, false);
         unbinder = ButterKnife.bind(this,view);
 
-
         String url = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
         // Volley to retrieve date
@@ -78,18 +77,17 @@ public class RecipeFragment extends Fragment {
                 // Update recipe list
                 recipeResponseList = gson.fromJson(response,recipeListType);
 
-                adapter = new RecipeRecyclerAdapter(getContext(),recipeResponseList);
-
                 if(getResources().getBoolean(R.bool.tablet_mode)){
+                    adapter = new RecipeRecyclerAdapter(getContext(),recipeResponseList);
                     mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
                     mRecyclerView.setHasFixedSize(true);
                     mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2,
                             GridSpacingItemDecoration.dpToPx(getContext(), 0), true));
                     mRecyclerView.setAdapter(adapter);
-
                     getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
 
                 } else {
+                    adapter = new RecipeRecyclerAdapter(getContext(),recipeResponseList);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                     mRecyclerView.setAdapter(adapter);
                 }
@@ -113,10 +111,6 @@ public class RecipeFragment extends Fragment {
                     }
                 });
 
-//                if(getResources().getBoolean(R.bool.tablet_mode)){
-//                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-//                }
-                // Set progressBar GONE when data is retrieved and shown
                 mProgressBar.setVisibility(View.GONE);
             }
         }, new Response.ErrorListener() {
