@@ -4,6 +4,7 @@ import android.content.ContentProviderOperation;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.OperationApplicationException;
+import android.content.pm.ActivityInfo;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -142,6 +143,9 @@ public class InstructionsActivity extends AppCompatActivity implements Instructi
 
         if(findViewById(R.id.instruction_direction_fragment_container) != null){
             mTwoPane = true;
+
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.instruction_direction_fragment_container,
                             DirectionsFragment.newInstance(sList, -1),DIRECTION_FRAGMENT_TAG)

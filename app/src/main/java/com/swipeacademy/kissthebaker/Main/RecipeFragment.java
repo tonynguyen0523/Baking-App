@@ -2,10 +2,12 @@ package com.swipeacademy.kissthebaker.Main;
 
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,6 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.swipeacademy.kissthebaker.BakingInstructions.InstructionsActivity;
+import com.swipeacademy.kissthebaker.GridSpacingItemDecoration;
 import com.swipeacademy.kissthebaker.MySingleton;
 import com.swipeacademy.kissthebaker.R;
 
@@ -75,10 +78,21 @@ public class RecipeFragment extends Fragment {
                 // Update recipe list
                 recipeResponseList = gson.fromJson(response,recipeListType);
 
-                // Setup adapter and RecyclerView
                 adapter = new RecipeRecyclerAdapter(getContext(),recipeResponseList);
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL, false));
-                mRecyclerView.setAdapter(adapter);
+
+                if(getResources().getBoolean(R.bool.tablet_mode)){
+                    mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+                    mRecyclerView.setHasFixedSize(true);
+                    mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2,
+                            GridSpacingItemDecoration.dpToPx(getContext(), 0), true));
+                    mRecyclerView.setAdapter(adapter);
+
+                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+
+                } else {
+                    mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                    mRecyclerView.setAdapter(adapter);
+                }
 
                 // Set up recycler item click listener
                 adapter.setOnItemClickListener(new RecipeRecyclerAdapter.RecipeCardClickListener() {
@@ -99,6 +113,9 @@ public class RecipeFragment extends Fragment {
                     }
                 });
 
+//                if(getResources().getBoolean(R.bool.tablet_mode)){
+//                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+//                }
                 // Set progressBar GONE when data is retrieved and shown
                 mProgressBar.setVisibility(View.GONE);
             }
@@ -111,6 +128,8 @@ public class RecipeFragment extends Fragment {
 
         // Add String request to queue
         MySingleton.getInstance(getContext().getApplicationContext()).addToRequestQueue(recipeRequest);
+
+
 
         return view;
     }

@@ -2,9 +2,11 @@ package com.swipeacademy.kissthebaker.BakingInstructions;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.swipeacademy.kissthebaker.Main.RecipeResponse;
@@ -24,16 +26,21 @@ public class DirectionsRecyclerAdapter extends RecyclerView.Adapter<DirectionsRe
     private ArrayList<RecipeResponse.StepsBean> sList;
     private Context context;
     private InstructionClickListener listener;
+    private SparseBooleanArray selectedItems;
+    private int lastSelected = -1;
+
 
     public DirectionsRecyclerAdapter(Context context, ArrayList<RecipeResponse.StepsBean> sList){
         this.context = context;
         this.sList = sList;
+        selectedItems = new SparseBooleanArray();
     }
 
     @Override
     public DirectionsRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.baking_steps_recycler_item,parent,false);
+
         return new DirectionsRecyclerAdapter.ViewHolder(view);
     }
 
@@ -43,6 +50,12 @@ public class DirectionsRecyclerAdapter extends RecyclerView.Adapter<DirectionsRe
         String shortDesc = sList.get(position).getShortDescription();
 
         holder.shortDesc.setText(context.getString(R.string.step,position + 1,shortDesc));
+
+        if(position == lastSelected) {
+            holder.mRelativeLayout.setSelected(true);
+        } else {
+            holder.mRelativeLayout.setSelected(false);
+        }
 }
 
     @Override
@@ -53,6 +66,8 @@ public class DirectionsRecyclerAdapter extends RecyclerView.Adapter<DirectionsRe
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.baking_steps_shortDes)TextView shortDesc;
+        @BindView(R.id.baking_steps_relative_layout)
+        RelativeLayout mRelativeLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -62,7 +77,11 @@ public class DirectionsRecyclerAdapter extends RecyclerView.Adapter<DirectionsRe
 
         @Override
         public void onClick(View view) {
+
             listener.onInstructionClicked(view,getAdapterPosition());
+            lastSelected = getAdapterPosition();
+
+            notifyDataSetChanged();
         }
     }
 
@@ -70,7 +89,7 @@ public class DirectionsRecyclerAdapter extends RecyclerView.Adapter<DirectionsRe
         void onInstructionClicked(View view, int position);
     }
 
-    public void  setOnInstructionClickListener(InstructionClickListener listener){
+    public void setOnInstructionClickListener(InstructionClickListener listener){
         this.listener = listener;
     }
 }

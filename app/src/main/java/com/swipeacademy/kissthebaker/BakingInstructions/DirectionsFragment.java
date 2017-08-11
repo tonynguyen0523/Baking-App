@@ -152,8 +152,14 @@ public class DirectionsFragment extends Fragment {
                 }
             });
 
-            initializePlayer(Uri.parse(videoUrl));
+            if (!videoUrl.equals("")) {
+                initializePlayer(Uri.parse(videoUrl));
+            } else {
+                assert mSimpleExoPlayerView != null;
+                mSimpleExoPlayerView.setVisibility(View.GONE);
+            }
         } else {
+            assert layout != null;
             layout.setVisibility(View.INVISIBLE);
         }
         return view;

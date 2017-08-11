@@ -28,7 +28,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"/>
 
-        </android.support.design.widget.AppBarLayout>
+    </android.support.design.widget.AppBarLayout>
 
     <fragment
         android:id="@+id/fragment_recipe"
