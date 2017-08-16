@@ -35,6 +35,7 @@ dependencies {
     compile 'net.simonvt.schematic:schematic:0.6.3'
     compile 'com.android.support:support-v4:26.+'
     compile 'com.google.android.exoplayer:exoplayer:r2.2.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'net.simonvt.schematic:schematic:{latest-version}'
     annotationProcessor 'net.simonvt.schematic:schematic-compiler:{latest-version}'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'

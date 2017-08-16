@@ -6,9 +6,12 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 import com.swipeacademy.kissthebaker.Main.RecipeResponse;
 import com.swipeacademy.kissthebaker.R;
 
@@ -28,7 +31,9 @@ public class DirectionsRecyclerAdapter extends RecyclerView.Adapter<DirectionsRe
     private InstructionClickListener listener;
     private int lastSelected = -1;
 
-
+    /**
+     * DirectionsRecyclerAdapter constructor
+     */
     public DirectionsRecyclerAdapter(Context context, ArrayList<RecipeResponse.StepsBean> sList){
         this.context = context;
         this.sList = sList;
@@ -43,11 +48,31 @@ public class DirectionsRecyclerAdapter extends RecyclerView.Adapter<DirectionsRe
     }
 
     @Override
-    public void onBindViewHolder(DirectionsRecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final DirectionsRecyclerAdapter.ViewHolder holder, int position) {
 
         String shortDesc = sList.get(position).getShortDescription();
+        String thumbnailUrl = sList.get(position).getThumbnailURL();
 
         holder.shortDesc.setText(context.getString(R.string.step,position,shortDesc));
+
+        // Check if thumbnail url is empty,
+        // if so hide thumbnail image view.
+        if(!thumbnailUrl.isEmpty()) {
+            Picasso.with(context).load(thumbnailUrl).into(holder.mThumbnail, new Callback() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onError() {
+                    holder.mThumbnail.setVisibility(View.GONE);
+
+                }
+            });
+        } else {
+            holder.mThumbnail.setVisibility(View.GONE);
+        }
 
         // Highlight selected item
         if(position == lastSelected) {
@@ -67,6 +92,8 @@ public class DirectionsRecyclerAdapter extends RecyclerView.Adapter<DirectionsRe
         @BindView(R.id.baking_steps_shortDes)TextView shortDesc;
         @BindView(R.id.baking_steps_relative_layout)
         RelativeLayout mRelativeLayout;
+        @BindView(R.id.thumbnail)
+        ImageView mThumbnail;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -85,10 +112,25 @@ public class DirectionsRecyclerAdapter extends RecyclerView.Adapter<DirectionsRe
         }
     }
 
+    /**
+     * Click listener interface
+     */
     public interface  InstructionClickListener{
+
+        /**
+         * Method for when item is clicked
+         *
+         * @param view ViewHolder view
+         * @param position Position of item clicked
+         */
         void onInstructionClicked(View view, int position);
     }
 
+    /**
+     * Custom click listener
+     *
+     * @param listener ClickListener
+     */
     public void setOnInstructionClickListener(InstructionClickListener listener){
         this.listener = listener;
     }

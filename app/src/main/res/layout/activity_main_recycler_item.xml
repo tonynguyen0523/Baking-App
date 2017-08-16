@@ -12,6 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/recipe_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"/>
+
         <FrameLayout
             android:id="@+id/favorite_frame_layout"
             android:layout_width="40dp"

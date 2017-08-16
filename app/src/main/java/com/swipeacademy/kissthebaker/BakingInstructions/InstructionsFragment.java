@@ -1,20 +1,16 @@
 package com.swipeacademy.kissthebaker.BakingInstructions;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
-
 import com.swipeacademy.kissthebaker.Main.RecipeResponse;
 import com.swipeacademy.kissthebaker.R;
 
@@ -29,22 +25,38 @@ import butterknife.Unbinder;
  */
 public class InstructionsFragment extends Fragment {
 
+    /**
+     * Use to save and retrieve ingredients array list
+     */
+    private static final String INGREDIENTS_LIST = "iList";
+
+    /**
+     * Use to save and retrieve steps array list
+     */
+    private static final String STEPS_LIST = "sList";
+
+    /**
+     * Use to save and retrieve current scroll position
+     */
+    private static final String SCROLL_POSITION = "scroll_position";
+
     @BindView(R.id.ingredients_recyclerView)
     RecyclerView mIRecyclerView;
     @BindView(R.id.directions_recyclerView)
     RecyclerView mSRecyclerView;
     @BindView(R.id.instructions_fragment_layout)
     LinearLayout mLinearLayout;
-
-    private static final String INGREDIENTS_LIST = "iList";
-    private static final String STEPS_LIST = "sList";
+    @BindView(R.id.instruction_scrollView)
+    NestedScrollView mScrollView;
 
     private ArrayList<RecipeResponse.IngredientsBean> iList;
     private ArrayList<RecipeResponse.StepsBean> sList;
-
     private IngredientsRecyclerAdapter ingredientsRecyclerAdapter;
     private DirectionsRecyclerAdapter directionsRecyclerAdapter;
+    private LinearLayoutManager mLayoutManager;
     private Unbinder unbinder;
+    private int scrollPosition;
+
 
     public static InstructionsFragment newInstance(
             ArrayList<RecipeResponse.IngredientsBean> iList, ArrayList<RecipeResponse.StepsBean> sList) {
@@ -56,14 +68,18 @@ public class InstructionsFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Callback for when a direction item is selected
+     */
     public interface InstructionCallBack{
         void onDirectionSelected(ArrayList<RecipeResponse.StepsBean> sList,
                                  int position);
     }
 
-    public InstructionsFragment() {
-        // Required empty public constructor
-    }
+    /**
+     * Empty constructor
+     */
+    public InstructionsFragment() {}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,19 +101,48 @@ public class InstructionsFragment extends Fragment {
         mIRecyclerView.setNestedScrollingEnabled(false);
 
         directionsRecyclerAdapter = new DirectionsRecyclerAdapter(getContext(), sList);
-        mSRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mSRecyclerView.setLayoutManager(mLayoutManager);
         mSRecyclerView.setAdapter(directionsRecyclerAdapter);
         mSRecyclerView.setNestedScrollingEnabled(false);
 
         directionsRecyclerAdapter.setOnInstructionClickListener(new DirectionsRecyclerAdapter.InstructionClickListener() {
             @Override
             public void onInstructionClicked(View view, int position) {
-
                 ((InstructionCallBack)getActivity()).onDirectionSelected(sList,position);
             }
         });
 
+        if(savedInstanceState != null){
+            scrollPosition = savedInstanceState.getInt(SCROLL_POSITION);
+
+            // Scroll back to saved position
+            mScrollView.post(new Runnable() {
+                @Override
+                public void run() {
+                    mScrollView.scrollTo(0, scrollPosition);
+                }
+            });
+        }
+
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SCROLL_POSITION, mScrollView.getScrollY());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        scrollPosition = mScrollView.getScrollY();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override

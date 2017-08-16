@@ -44,6 +44,5 @@
             android:gravity="center"
             android:text="@string/no_recipe_favorites"/>
 
-
 </FrameLayout>
 </LinearLayout>

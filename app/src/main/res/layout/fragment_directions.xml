@@ -64,6 +64,4 @@
         android:layout_margin="10dp"
         tools:text="directions"/>
 
-
-
 </LinearLayout>

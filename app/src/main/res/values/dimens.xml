@@ -9,5 +9,10 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="toggle_button">36dp</dimen>
     <dimen name="toolbarTextSize">40sp</dimen>
     <dimen name="mainAppbarHeight">112dp</dimen>
+    <dimen name="barElevation">4dp</dimen>
+
+    <!-- Navigation bar -->
+    <dimen name="naviArrowWidth">100dp</dimen>
+    <dimen name="naviTextSize">20sp</dimen>
 
 </resources>

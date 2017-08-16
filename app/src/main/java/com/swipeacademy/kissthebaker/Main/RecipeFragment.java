@@ -1,21 +1,27 @@
 package com.swipeacademy.kissthebaker.Main;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.TextView;
 
+import com.android.volley.NetworkError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -43,6 +49,8 @@ public class RecipeFragment extends Fragment {
 
     @BindView(R.id.recipe_recyclerView)RecyclerView mRecyclerView;
     @BindView(R.id.main_progress_bar)ProgressBar mProgressBar;
+    @BindView(R.id.recipe_emptyView)TextView mEmptyView;
+    @BindView(R.id.recipe_coordinator_layout)CoordinatorLayout mCoordinatorLayout;
 
     private List<RecipeResponse> recipeResponseList;
     private RecipeRecyclerAdapter adapter;
@@ -64,30 +72,48 @@ public class RecipeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_recipe, container, false);
         unbinder = ButterKnife.bind(this,view);
 
+        setData();
+
+        return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    /**
+     * Method that retrieves the data
+     */
+    private void setData(){
+
         String url = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
-        // Volley to retrieve date
-        StringRequest recipeRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        if(checkConnection(getContext())) {
+
+            StringRequest recipeRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
             @Override
             public void onResponse(String response) {
 
                 // Set up Gson to parse Json
                 Gson gson = new GsonBuilder().create();
-                Type recipeListType = new TypeToken<ArrayList<RecipeResponse>>(){}.getType();
+                Type recipeListType = new TypeToken<ArrayList<RecipeResponse>>() {
+                }.getType();
                 // Update recipe list
-                recipeResponseList = gson.fromJson(response,recipeListType);
+                recipeResponseList = gson.fromJson(response, recipeListType);
 
-                if(getResources().getBoolean(R.bool.tablet_mode)){
-                    adapter = new RecipeRecyclerAdapter(getContext(),recipeResponseList);
-                    mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+                if (getResources().getBoolean(R.bool.tablet_mode)) {
+                    adapter = new RecipeRecyclerAdapter(getContext(), recipeResponseList);
+                    mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
                     mRecyclerView.setHasFixedSize(true);
                     mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2,
                             GridSpacingItemDecoration.dpToPx(getContext(), 0), true));
                     mRecyclerView.setAdapter(adapter);
                     getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-
                 } else {
-                    adapter = new RecipeRecyclerAdapter(getContext(),recipeResponseList);
+                    adapter = new RecipeRecyclerAdapter(getContext(), recipeResponseList);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                     mRecyclerView.setAdapter(adapter);
                 }
@@ -100,18 +126,18 @@ public class RecipeFragment extends Fragment {
                         Intent intent = new Intent(getActivity(), InstructionsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putInt(getString(R.string.position), position);
-                        bundle.putString(getString(R.string.recipeName),recipeResponseList.get(position).getName());
+                        bundle.putString(getString(R.string.recipeName), recipeResponseList.get(position).getName());
                         bundle.putInt(getString(R.string.recipeId), recipeResponseList.get(position).getId());
                         bundle.putInt(getString(R.string.servingSize), recipeResponseList.get(position).getServings());
-                        bundle.putParcelableArrayList(getString(R.string.iList),recipeResponseList.get(position).getIngredients());
+                        bundle.putParcelableArrayList(getString(R.string.iList), recipeResponseList.get(position).getIngredients());
                         bundle.putParcelableArrayList(getString(R.string.sList), recipeResponseList.get(position).getSteps());
                         intent.putExtras(bundle);
-                        startActivityForResult(intent,1);
-
+                        startActivityForResult(intent, 1);
                     }
                 });
 
-                mProgressBar.setVisibility(View.GONE);
+                mProgressBar.setVisibility(View.INVISIBLE);
+                mEmptyView.setVisibility(View.INVISIBLE);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -123,16 +149,44 @@ public class RecipeFragment extends Fragment {
         // Add String request to queue
         MySingleton.getInstance(getContext().getApplicationContext()).addToRequestQueue(recipeRequest);
 
-        return view;
+        } else {
+            mEmptyView.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.INVISIBLE);
+
+            Snackbar snackbar = Snackbar.make(mCoordinatorLayout,
+                    R.string.recipe_empty_view, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.retry, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            setData();
+                        }
+                    });
+            snackbar.show();
+
+        }
+
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
+    /**
+     * Method that checks if there is a valid network connection
+     *
+     * @param context Context
+     * @return A boolean if there is a valid network connection
+     */
+    private boolean checkConnection(Context context){
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
     }
 
+
+    /**
+     * Method that refreshes the recipe list
+     */
     public void refreshList(){
-        adapter.notifyDataSetChanged();
+        if(adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 }

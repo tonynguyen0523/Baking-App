@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.swipeacademy.kissthebaker.Main.MainActivity">
 
-    <android.support.design.widget.AppBarLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mainAppbarHeight"
-        android:background="@color/colorPrimary">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            app:layout_scrollFlags="scroll|enterAlways"/>
+            android:background="@color/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="wrap_content"
             android:fontFamily="cursive"
             android:textSize="@dimen/toolbarTextSize"
             android:textStyle="bold"
             android:textColor="@color/toolbarTextColor"
             android:text="@string/app_name"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"/>
-
-        </android.support.design.widget.AppBarLayout>
+            android:layout_gravity="center_vertical"/>
+    </android.support.v7.widget.Toolbar>
+        <!--</android.support.design.widget.AppBarLayout>-->
 
     <fragment
         android:id="@+id/fragment_recipe"
@@ -39,5 +41,5 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     </fragment>
-
+</LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

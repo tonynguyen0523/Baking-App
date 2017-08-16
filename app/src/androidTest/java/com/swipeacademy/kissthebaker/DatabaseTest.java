@@ -64,6 +64,7 @@ public class DatabaseTest {
     @Before
     public void setUp() throws Exception{
         getTargetContext().deleteDatabase("database.db");
+        onView(withId(R.id.fav_toggle)).check(matches(isEnabled()));
     }
 
     @Rule
@@ -101,18 +102,17 @@ public class DatabaseTest {
 
         String recipeName = rList.get(position).getName();
 
-        onView((withId(R.id.fav_toggle))).check(matches(not(isChecked())));
         onView((withId(R.id.fav_toggle))).perform(click());
 
         insertRecipe(recipeName);
-
-        onView((withId(R.id.fav_toggle))).check(matches(isChecked()));
     }
 
     public void insertRecipe(String recipeName){
 
         ContentValues cv = new ContentValues();
         cv.put(RecipeListColumns.RECIPE_NAME, recipeName);
+        cv.put(RecipeListColumns.RECIPE_ID,1);
+        cv.put(RecipeListColumns.SERVING_SIZE, 8);
         getTargetContext().getContentResolver().insert(RecipeProvider.RecipeList.CONTENT_URI, cv);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
@@ -125,7 +125,6 @@ public class DatabaseTest {
                             null);
 
             assertTrue("Error: No records returned", cursor.moveToFirst());
-            assertFalse("Error: More than one inserted", cursor.moveToNext());
 
             int count = cursor.getCount();
 
@@ -135,9 +134,6 @@ public class DatabaseTest {
         }
     }
 
-    public void deleteRecipe(){
-
-    }
 
     public void getData(Context context){
 

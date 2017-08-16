@@ -20,13 +20,22 @@ public class Utility {
 
     private static final String SAVED_INGREDIENT = "saved_ingredient";
 
-    /** Get saved recipe name */
+    /**
+     * Method to get saved recipe name
+     *
+     * @param context Context
+     */
     public static String getSavedIngredientName(Context context){
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         return sp.getString(SAVED_INGREDIENT, "");
     }
 
-    /** Save recipe name */
+    /**
+     * Method to save recipe name
+     *
+     * @param context Context
+     * @param recipeName Name of recipe to be saved
+     */
     public static void setSavedIngredientName(Context context, String recipeName){
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
@@ -34,7 +43,12 @@ public class Utility {
         editor.apply();
     }
 
-    /** Check if recipe is in database */
+    /**
+     * Method to heck if recipe is in database
+     *
+     * @param context Context
+     * @param recipeId ID of recipe
+     */
     public static boolean recipeExist(Context context, int recipeId){
 
         SQLiteOpenHelper database = com.swipeacademy.kissthebaker.data.generated.RecipeDatabase.getInstance(context);

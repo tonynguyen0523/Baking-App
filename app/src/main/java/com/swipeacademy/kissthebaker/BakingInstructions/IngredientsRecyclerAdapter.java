@@ -25,6 +25,9 @@ public class IngredientsRecyclerAdapter extends RecyclerView.Adapter<Ingredients
     private ArrayList<RecipeResponse.IngredientsBean> iList;
     private Context context;
 
+    /**
+     * IngredientsRecyclerAdapter constructor
+     */
     public IngredientsRecyclerAdapter(Context context, ArrayList<RecipeResponse.IngredientsBean> iList){
         this.context = context;
         this.iList = iList;

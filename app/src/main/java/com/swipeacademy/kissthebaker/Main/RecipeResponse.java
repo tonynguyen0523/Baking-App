@@ -90,32 +90,17 @@ public class RecipeResponse implements Parcelable{
         return servings;
     }
 
-    public void setServings(int servings) {
-        this.servings = servings;
-    }
-
     public String getImage() {
         return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public ArrayList<IngredientsBean> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(ArrayList<IngredientsBean> ingredients) {
-        this.ingredients = ingredients;
-    }
 
     public ArrayList<StepsBean> getSteps() {
         return steps;
-    }
-
-    public void setSteps(ArrayList<StepsBean> steps) {
-        this.steps = steps;
     }
 
 
@@ -165,24 +150,12 @@ public class RecipeResponse implements Parcelable{
             return quantity;
         }
 
-        public void setQuantity(int quantity) {
-            this.quantity = quantity;
-        }
-
         public String getMeasure() {
             return measure;
         }
 
-        public void setMeasure(String measure) {
-            this.measure = measure;
-        }
-
         public String getIngredient() {
             return ingredient;
-        }
-
-        public void setIngredient(String ingredient) {
-            this.ingredient = ingredient;
         }
     }
 
@@ -247,33 +220,16 @@ public class RecipeResponse implements Parcelable{
             return shortDescription;
         }
 
-        public void setShortDescription(String shortDescription) {
-            this.shortDescription = shortDescription;
-        }
-
         public String getDescription() {
             return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
         }
 
         public String getVideoURL() {
             return videoURL;
         }
 
-        public void setVideoURL(String videoURL) {
-            this.videoURL = videoURL;
-        }
-
         public String getThumbnailURL() {
             return thumbnailURL;
         }
-
-        public void setThumbnailURL(String thumbnailURL) {
-            this.thumbnailURL = thumbnailURL;
-        }
-
     }
 }

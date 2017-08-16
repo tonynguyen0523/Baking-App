@@ -1,21 +1,12 @@
 package com.swipeacademy.kissthebaker.BakingInstructions;
 
-import android.content.res.Configuration;
-import android.os.Build;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.swipeacademy.kissthebaker.Main.RecipeResponse;
 import com.swipeacademy.kissthebaker.R;
@@ -25,7 +16,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static java.security.AccessController.getContext;
 
 public class DirectionsActivity extends AppCompatActivity {
 
@@ -49,6 +39,7 @@ public class DirectionsActivity extends AppCompatActivity {
         final FragmentManager fm = getSupportFragmentManager();
         mFragment = (DirectionsFragment) fm.findFragmentByTag(TAG_RETAINED_FRAGMENT);
 
+        // Retrieve data
         Bundle bundle = getIntent().getExtras();
         sList = bundle.getParcelableArrayList(getString(R.string.stepsList_Key));
         stepPosition = bundle.getInt(getString(R.string.stepPosition));
@@ -98,6 +89,11 @@ public class DirectionsActivity extends AppCompatActivity {
         outState.putInt(STEP_NUMBER,stepPosition);
     }
 
+    /**
+     * Method to update the current step number in navigation bar
+     *
+     * @param stepPosition Current position
+     */
     private void updateStepNumberText(int stepPosition){
 
         if(mStepNum != null) {

@@ -63,6 +63,7 @@ public class InstructionsActivity extends AppCompatActivity implements Instructi
         final int position = bundle.getInt(getString(R.string.position));
         recipeName.setText(name);
 
+        // Check if recipe exist in database to set toggle
         if(Utility.recipeExist(this,recipeId)){
             toggleButton.setChecked(true);
         } else {
@@ -127,10 +128,15 @@ public class InstructionsActivity extends AppCompatActivity implements Instructi
             }
         });
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.instructions_fragment_container, InstructionsFragment.newInstance(iList,sList))
-                .commit();
+        if(savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.instructions_fragment_container, InstructionsFragment.newInstance(iList, sList))
+                    .commit();
+        } else {
 
+        }
+
+        // Check for two pane mode
         if(findViewById(R.id.instruction_direction_fragment_container) != null){
             mTwoPane = true;
 
@@ -150,7 +156,6 @@ public class InstructionsActivity extends AppCompatActivity implements Instructi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        finish();
     }
 
 

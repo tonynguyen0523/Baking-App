@@ -98,12 +98,6 @@ public class FavoriteRecipeWidgetProvider extends AppWidgetProvider {
                 new Intent(context, WidgetRemoteViewsService.class));
     }
 
-    @SuppressWarnings("deprecation")
-    private static void setRemoteAdapterV11(Context context, @NonNull final RemoteViews views){
-        views.setRemoteAdapter(0, R.id.widget_list,
-                new Intent(context, WidgetRemoteViewsService.class));
-    }
-
     public static void setWidgetText(Context context, String name){
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.favorite_recipe_widget);

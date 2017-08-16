@@ -1,52 +1,29 @@
 package com.swipeacademy.kissthebaker.Main;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.swipeacademy.kissthebaker.BakingInstructions.InstructionsActivity;
-import com.swipeacademy.kissthebaker.BakingInstructions.InstructionsFragment;
-import com.swipeacademy.kissthebaker.MySingleton;
 import com.swipeacademy.kissthebaker.R;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Created by tonyn on 8/5/2017.
+ */
 public class MainActivity extends AppCompatActivity{
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ButterKnife.bind(this);
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-
         // Refresh recipe list in case database was updated
         RecipeFragment fragment = (RecipeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_recipe);
         fragment.refreshList();
-        Log.d("ONRESTART", "restart called");
     }
+
 }

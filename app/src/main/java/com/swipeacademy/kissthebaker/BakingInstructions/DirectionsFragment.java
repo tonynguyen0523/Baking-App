@@ -1,18 +1,14 @@
 package com.swipeacademy.kissthebaker.BakingInstructions;
 
-import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +16,6 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -36,8 +31,6 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.swipeacademy.kissthebaker.Main.RecipeResponse;
 import com.swipeacademy.kissthebaker.R;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -63,6 +56,7 @@ public class DirectionsFragment extends Fragment {
 
     private ArrayList<RecipeResponse.StepsBean> sList;
     private String videoUrl;
+    private String thumbnailUrl;
     private String description;
     private String directionString;
     private int position;
@@ -71,6 +65,8 @@ public class DirectionsFragment extends Fragment {
     private Unbinder unbinder;
     private boolean isFullScreen = false;
     private boolean isNull;
+    private boolean playerStopped = false;
+    private long playerStopPosition;
 
     public DirectionsFragment() {
         // Required empty public constructor
@@ -122,12 +118,12 @@ public class DirectionsFragment extends Fragment {
             exo_current_position = savedInstanceState.getLong(EXO_CURRENT_POSITION);
         }
 
-
         if(!isNull) {
 
             videoUrl = sList.get(position).getVideoURL();
             description = sList.get(position).getShortDescription();
             directionString = sList.get(position).getDescription();
+            thumbnailUrl = sList.get(position).getThumbnailURL();
 
             // Toolbar null when in tablet mode
             if(toolbarText != null) {
@@ -160,9 +156,11 @@ public class DirectionsFragment extends Fragment {
             // hide player if empty
             if (!videoUrl.equals("")) {
                 initializePlayer(Uri.parse(videoUrl));
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
             } else {
                 assert mSimpleExoPlayerView != null;
                 mSimpleExoPlayerView.setVisibility(View.GONE);
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
             }
         } else {
             // For tablet mode, if no direction selected hide layout
@@ -180,12 +178,33 @@ public class DirectionsFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        initializePlayer(Uri.parse(videoUrl));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(exoPlayer != null) {
+            playerStopPosition = exoPlayer.getCurrentPosition();
+            playerStopped = true;
+            releasePlayer();
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         releasePlayer();
         unbinder.unbind();
     }
 
+    /**
+     * Method to initialize media player
+     *
+     * @param mediaUri Uri of media
+     */
     private void initializePlayer(Uri mediaUri){
         if(exoPlayer == null){
             TrackSelector trackSelector = new DefaultTrackSelector();
@@ -196,12 +215,17 @@ public class DirectionsFragment extends Fragment {
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                     getContext(),userAgent), new DefaultExtractorsFactory(),null,null);
             exoPlayer.prepare(mediaSource);
-            if (exo_current_position != 0){
+            if (exo_current_position != 0 && !playerStopped){
                 exoPlayer.seekTo(exo_current_position);
+            } else {
+                exoPlayer.seekTo(playerStopPosition);
             }
         }
     }
 
+    /**
+     * Method to release exoPlayer
+     */
     private void releasePlayer(){
         if(exoPlayer != null) {
             exoPlayer.stop();
@@ -210,14 +234,15 @@ public class DirectionsFragment extends Fragment {
         }
     }
 
+    /**
+     * Method to check for current device orientation
+     */
     public void checkFullScreen(){
         Configuration newConfig = new Configuration();
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             isFullScreen = true;
-            Toast.makeText(getContext(), "landscape", Toast.LENGTH_SHORT).show();
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
             isFullScreen = false;
-            Toast.makeText(getContext(), "portrait", Toast.LENGTH_SHORT).show();
         }
     }
 }

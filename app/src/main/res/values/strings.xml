@@ -20,4 +20,6 @@
     <string name="iList">ingredientsList</string>
     <string name="sList">stepsList</string>
     <string name="no_recipe_favorites">No recipe favorites!</string>
+    <string name="recipe_empty_view">Empty list, check internet connection.</string>
+    <string name="retry">RETRY</string>
 </resources>
