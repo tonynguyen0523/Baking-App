@@ -7,6 +7,10 @@ The JSON file contains the recipes' instructions, ingredients, videos and images
 
 One of the skills you will demonstrate in this project is how to handle unexpected input in your data -- professional developers often cannot expect polished JSON data when building an app.
 
+### Preview:
+![home](https://media.giphy.com/media/u0rKSKxnzmAeI/giphy.gif)
+![detail](https://media.giphy.com/media/4UJBpKQRL5pPq/giphy.gif)
+
 ## Project Overview
 [Rubric][2]
 
@@ -25,9 +29,7 @@ In this project you will:
 - Leverage a third-party library in your app.
 - Use Fragments to create a responsive design that works on phones and tablets.
 
-## Preview:
-![home](https://media.giphy.com/media/u0rKSKxnzmAeI/giphy.gif)
-![detail](https://media.giphy.com/media/4UJBpKQRL5pPq/giphy.gif)
+
 
 [1]:https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json
 [2]:https://review.udacity.com/#!/rubrics/829/view
