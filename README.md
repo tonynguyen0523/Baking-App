@@ -11,6 +11,12 @@ One of the skills you will demonstrate in this project is how to handle unexpect
 ![home](https://media.giphy.com/media/u0rKSKxnzmAeI/giphy.gif)
 ![detail](https://media.giphy.com/media/4UJBpKQRL5pPq/giphy.gif)
 
+### Installation
+Clone the GitHub repository.
+```
+$ git clone https://github.com/tonynguyen0523/Baking-App.git
+```
+
 ## Project Overview
 [Rubric][2]
 
